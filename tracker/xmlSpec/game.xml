@@ -1,0 +1,101 @@
+<?xml version = "1.0"?>
+<GameData>
+<!-- screenTitle is also used to identify you and your animation. 
+     So make sure to include your name as part of the screenTitle -->
+<title>Sherry Lyu's Tracker Framework</title>
+<maxStringSize>50</maxStringSize>
+
+<frameCapOn>true</frameCapOn>
+<period>17</period>
+
+<maxFrames>300</maxFrames>
+<username>siyunl</username>
+<fullname>Sherry Lyu</fullname>
+
+<view>
+  <width>864</width>
+  <height>480</height>
+</view>
+
+<world>
+  <width>5000</width>
+  <height>480</height>
+</world>
+
+<back>
+  <file>assets/rainbowbg.jpg</file>
+  <factor>4</factor>
+  <transparency>false</transparency>
+</back>
+
+<tower>
+  <file>assets/towertemp1.png</file>
+  <factor>3</factor>
+  <transparency>false</transparency>
+</tower>
+
+<cloud>
+  <file>assets/cloudtemp3.png</file>
+  <factor>2</factor>
+  <transparency>false</transparency>
+</cloud>
+
+<tree>
+  <file>assets/treetemp3.png</file>
+  <factor>2</factor>
+  <transparency>false</transparency>
+</tree>
+
+<ground>
+  <file>assets/groundtemp3.png</file>
+  <factor>1</factor>
+  <transparency>false</transparency>
+</ground>
+
+<font name="font">
+  <file>fonts/gooddog.otf</file>
+  <size>40</size>
+  <red>255</red>
+  <green>153</green>
+  <blue>153</blue>
+  <alpha>0</alpha>
+</font>
+
+<!-- custom color font -->
+<customfont name="customfont">
+  <file>fonts/gooddog.otf</file>
+  <size>40</size>
+  <red>255</red>
+  <green>255</green>
+  <blue>0</blue>
+  <alpha>0</alpha>
+</customfont>
+
+<Girl>
+  <file>assets/girl.png</file>
+  <startLoc x="0" y="330"/>
+  <frames>7</frames>
+  <frameInterval>300</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Girl>
+
+<GirlReverse>
+  <file>assets/girlreverse.png</file>
+  <frames>7</frames>
+  <frameInterval>300</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlReverse>
+
+<Chicken>
+  <file>assets/chicken.png</file>
+  <startLoc x="0" y="330"/>
+  <speedX>300</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Chicken>
+
+</GameData>
