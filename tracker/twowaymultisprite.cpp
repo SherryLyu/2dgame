@@ -2,6 +2,15 @@
 #include "gamedata.h"
 #include "renderContext.h"
 
+Vector2f TwowaymultiSprite::makeVelocity(int vx, int vy) const {
+  float newvx = Gamedata::getInstance().getRandFloat(vx-5,vx+10);;
+  float newvy = Gamedata::getInstance().getRandFloat(vy,vy);;
+  newvx *= [](){ if(rand()%2) return -1; else return 1; }();
+  newvy *= [](){ if(rand()%2) return -1; else return 1; }();
+
+  return Vector2f(newvx, newvy);
+}
+
 void TwowaymultiSprite::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
 	if (timeSinceLastFrame > frameInterval) {
@@ -14,7 +23,7 @@ TwowaymultiSprite::TwowaymultiSprite( const std::string& name) :
   Drawable(name, 
            Vector2f(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
                     Gamedata::getInstance().getXmlInt(name+"/startLoc/y")), 
-           Vector2f(Gamedata::getInstance().getXmlInt(name+"/speedX"),
+           makeVelocity(Gamedata::getInstance().getXmlInt(name+"/speedX"),
                     Gamedata::getInstance().getXmlInt(name+"/speedY"))
            ),
   images( RenderContext::getInstance()->getImages(name) ),

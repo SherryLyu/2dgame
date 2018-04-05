@@ -39,6 +39,7 @@ protected:
   int worldHeight;
   std::string currentname;
 
+  Vector2f makeVelocity(int, int) const;
   void advanceFrame(Uint32 ticks);
   TwowaymultiSprite& operator=(const TwowaymultiSprite&);
 };

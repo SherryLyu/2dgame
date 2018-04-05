@@ -4,7 +4,7 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfDrops>100</numberOfDrops>
+<numberOfDrops>25</numberOfDrops>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -19,7 +19,7 @@
 </view>
 
 <world>
-  <width>4000</width>
+  <width>1500</width>
   <height>480</height>
 </world>
 
@@ -56,9 +56,9 @@
 <font name="font">
   <file>fonts/gooddog.otf</file>
   <size>40</size>
-  <red>255</red>
-  <green>153</green>
-  <blue>153</blue>
+  <red>169</red>
+  <green>33</green>
+  <blue>109</blue>
   <alpha>0</alpha>
 </font>
 
@@ -66,11 +66,18 @@
 <customfont name="customfont">
   <file>fonts/gooddog.otf</file>
   <size>40</size>
-  <red>255</red>
-  <green>255</green>
-  <blue>0</blue>
+  <red>169</red>
+  <green>33</green>
+  <blue>109</blue>
   <alpha>0</alpha>
 </customfont>
+
+<fontforhud name="fontforhud">
+  <red>155</red>
+  <green>62</green>
+  <blue>41</blue>
+  <alpha>0</alpha>
+</fontforhud>
 
 <Girl>
   <file>assets/girl.png</file>
@@ -101,20 +108,94 @@
 </GirlStop>
 
 <Chicken>
-  <file>assets/chicken.png</file>
-  <startLoc x="0" y="330"/>
-  <speedX>0</speedX>
+  <file>assets/smallchicken.png</file>
+  <startLoc x="0" y="420"/>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Chicken>
 
+<ChickenReverse>
+  <file>assets/smallchickenreverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</ChickenReverse>
+
+<Horse>
+  <file>assets/horse.png</file>
+  <startLoc x="100" y="400"/>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Horse>
+
+<HorseReverse>
+  <file>assets/horsereverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</HorseReverse>
+
+<Cow>
+  <file>assets/cow.png</file>
+  <startLoc x="50" y="400"/>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Cow>
+
+<CowReverse>
+  <file>assets/cowreverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</CowReverse>
+
+<Rabbit>
+  <file>assets/rabbit.png</file>
+  <startLoc x="150" y="420"/>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Rabbit>
+
+<RabbitReverse>
+  <file>assets/rabbitreverse.png</file>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</RabbitReverse>
+
 <Drop>
-  <file>assets/drop.png</file>
-  <startLoc x="432" y="0"/>
+  <file>assets/smallb.png</file>
+  <startLoc x="432" y="-200"/>
   <speedX>0</speedX>
   <speedY>50</speedY>
-  <safeDistance>75</safeDistance>
+  <safeDistance>100</safeDistance>
   <transparency>false</transparency>
 </Drop>
+
+<Dialogue>
+  <file>assets/dialogue.png</file>
+  <startLoc x="200" y="300"/>
+  <transparency>false</transparency>
+</Dialogue>
 
 </GameData>

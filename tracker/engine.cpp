@@ -15,11 +15,24 @@
 #include "collisionStrategy.h"
 
 Engine::~Engine() { 
-  for(size_t i = 0; i < chicken.size(); ++i){
-    delete chicken[i];
+  delete girlPlayer;
+  for( Drawable* chicken : chickens){
+    delete chicken;
   }
-  for(size_t j = 0; j < girl.size(); ++j){
-    delete girl[j];
+  for( Drawable* horse : horses){
+    delete horse;
+  }
+  for( Drawable* cow : cows){
+    delete cow;
+  }
+  for( Drawable* rabbit : rabbits){
+    delete rabbit;
+  }
+  for( SmartSprite* drop : drops){
+    delete drop;
+  }
+  for ( CollisionStrategy* strategy : strategies ) {
+    delete strategy;
   }
   std::cout << "Terminating program" << std::endl;
 }
@@ -34,18 +47,21 @@ Engine::Engine() :
   tower("tower", Gamedata::getInstance().getXmlInt("tower/factor") ),
   tree("tree", Gamedata::getInstance().getXmlInt("tree/factor") ),
   ground("ground", Gamedata::getInstance().getXmlInt("ground/factor") ),
+  hud(),
   viewport( Viewport::getInstance() ),
   //use initialization list 
-  chicken({new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken"),
-    new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken")}),
-  girl({new TwowaymultiSprite("Girl")}),
+  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
+  horses({new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse")}),
+  cows({new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow")}),
+  rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
   drops(),
   girlPlayer(new SubjectSprite("Girl")),
   strategies(),
   currentStrategy(0),
   currentSprite(0),
   collision(false),
-  makeVideo( false )
+  makeVideo( false ),
+  showHud( false )
 {
   int n = Gamedata::getInstance().getXmlInt("numberOfDrops");
   drops.reserve(n);
@@ -71,12 +87,21 @@ void Engine::draw() const {
   tree.draw();
   ground.draw();
   
-
-  for(size_t i = 0; i < chicken.size(); ++i){
-     chicken.at(i)->draw();
+  if(showHud){
+    hud.draw(renderer);
   }
-  for(size_t j = 0; j < girl.size(); ++j){
-     girl.at(j)->draw();
+
+  for(size_t i = 0; i < chickens.size(); ++i){
+     chickens.at(i)->draw();
+  }
+  for(size_t i = 0; i < horses.size(); ++i){
+     horses.at(i)->draw();
+  }
+  for(size_t i = 0; i < cows.size(); ++i){
+     cows.at(i)->draw();
+  }
+  for(size_t i = 0; i < rabbits.size(); ++i){
+     rabbits.at(i)->draw();
   }
   for ( const Drawable* drop : drops ) {
      drop->draw();
@@ -102,11 +127,17 @@ void Engine::checkForCollisions() {
 }
 
 void Engine::update(Uint32 ticks) {
-  for(size_t i = 0; i < chicken.size(); ++i){
-     chicken.at(i)->update(ticks);
+  for(size_t i = 0; i < chickens.size(); ++i){
+     chickens.at(i)->update(ticks);
   }
-  for(size_t j = 0; j < girl.size(); ++j){
-     girl.at(j)->update(ticks);
+  for(size_t i = 0; i < horses.size(); ++i){
+     horses.at(i)->update(ticks);
+  }
+  for(size_t i = 0; i < cows.size(); ++i){
+     cows.at(i)->update(ticks);
+  }
+  for(size_t i = 0; i < rabbits.size(); ++i){
+     rabbits.at(i)->update(ticks);
   }
   checkForCollisions();
   girlPlayer->update(ticks);
@@ -129,7 +160,7 @@ void Engine::switchSprite(){
     Viewport::getInstance().setObjectToTrack(girlPlayer);
   }
   else {
-    Viewport::getInstance().setObjectToTrack(chicken[0]);
+    Viewport::getInstance().setObjectToTrack(chickens[0]);
   }
 }
 
@@ -163,6 +194,12 @@ void Engine::play() {
         }
         if ( keystate[SDL_SCANCODE_T] ) {
           switchSprite();
+        }
+        if ( keystate[SDL_SCANCODE_F1] && !showHud) {
+          showHud = true;
+        }
+        else if ( keystate[SDL_SCANCODE_F1] && showHud) {
+          showHud = false;
         }
         if (keystate[SDL_SCANCODE_F4] && !makeVideo) {
           std::cout << "Initiating frame capture" << std::endl;

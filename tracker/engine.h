@@ -4,6 +4,7 @@
 #include "renderContext.h"
 #include "clock.h"
 #include "world.h"
+#include "hud.h"
 #include "viewport.h"
 
 class CollisionStrategy;
@@ -33,11 +34,14 @@ private:
   World tree;
   World ground;
 
+  Hud hud;
   Viewport& viewport;
 
   //polymorphic vector for coherent animation
-  std::vector<Drawable*> chicken;
-  std::vector<Drawable*> girl;
+  std::vector<Drawable*> chickens;
+  std::vector<Drawable*> horses;
+  std::vector<Drawable*> cows;
+  std::vector<Drawable*> rabbits;
   std::vector<SmartSprite*> drops;
   SubjectSprite* girlPlayer;
   std::vector<CollisionStrategy*> strategies;
@@ -46,6 +50,7 @@ private:
   bool collision;
 
   bool makeVideo;
+  bool showHud;
 
   void draw() const;
   void update(Uint32);
