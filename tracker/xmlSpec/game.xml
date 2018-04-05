@@ -4,6 +4,7 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
+<numberOfDrops>100</numberOfDrops>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -18,7 +19,7 @@
 </view>
 
 <world>
-  <width>5000</width>
+  <width>4000</width>
   <height>480</height>
 </world>
 
@@ -74,7 +75,7 @@
 <Girl>
   <file>assets/girl.png</file>
   <startLoc x="0" y="330"/>
-  <frames>7</frames>
+  <frames>8</frames>
   <frameInterval>300</frameInterval>
   <speedX>200</speedX>
   <speedY>0</speedY>
@@ -83,19 +84,37 @@
 
 <GirlReverse>
   <file>assets/girlreverse.png</file>
-  <frames>7</frames>
+  <frames>8</frames>
   <frameInterval>300</frameInterval>
   <speedX>200</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </GirlReverse>
 
+<GirlStop>
+  <file>assets/girlstop.png</file>
+  <frames>1</frames>
+  <frameInterval>0</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlStop>
+
 <Chicken>
   <file>assets/chicken.png</file>
   <startLoc x="0" y="330"/>
-  <speedX>300</speedX>
+  <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Chicken>
+
+<Drop>
+  <file>assets/drop.png</file>
+  <startLoc x="432" y="0"/>
+  <speedX>0</speedX>
+  <speedY>50</speedY>
+  <safeDistance>75</safeDistance>
+  <transparency>false</transparency>
+</Drop>
 
 </GameData>

@@ -1,7 +1,7 @@
 CXX = g++
 
 # Warnings frequently signal eventual errors:
-CXXFLAGS=`sdl2-config --cflags` -g -W -Wall -std=c++11 -Weffc++ -Wextra -pedantic -O0 -I `sdl2-config --prefix`/include/
+CXXFLAGS=`sdl2-config --cflags` -g -W -Wall -Werror -std=c++11 -Weffc++ -Wextra -pedantic -O0 -I `sdl2-config --prefix`/include/
 
 LDFLAGS = `sdl2-config --libs` -lm -lexpat -lSDL2_ttf -lSDL2_image
 
@@ -17,7 +17,13 @@ OBJS = \
 	imageFactory.o \
 	frameGenerator.o \
 	sprite.o \
+	multisprite.o \
 	twowaymultisprite.o \
+	smartSprite.o \
+	subjectSprite.o \
+	collisionStrategy.o \
+	player.o \
+	hud.o \
 	vector2f.o \
 	clock.o \
 	engine.o \

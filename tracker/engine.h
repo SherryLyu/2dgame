@@ -6,6 +6,10 @@
 #include "world.h"
 #include "viewport.h"
 
+class CollisionStrategy;
+class SmartSprite;
+class SubjectSprite;
+
 class Engine {
 public:
   Engine ();
@@ -34,7 +38,12 @@ private:
   //polymorphic vector for coherent animation
   std::vector<Drawable*> chicken;
   std::vector<Drawable*> girl;
+  std::vector<SmartSprite*> drops;
+  SubjectSprite* girlPlayer;
+  std::vector<CollisionStrategy*> strategies;
+  int currentStrategy;
   int currentSprite;
+  bool collision;
 
   bool makeVideo;
 

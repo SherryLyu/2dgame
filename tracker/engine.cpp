@@ -6,9 +6,13 @@
 #include <iomanip>
 #include "sprite.h"
 #include "twowaymultisprite.h"
+#include "smartSprite.h"
+#include "subjectSprite.h"
+#include "player.h"
 #include "gamedata.h"
 #include "engine.h"
 #include "frameGenerator.h"
+#include "collisionStrategy.h"
 
 Engine::~Engine() { 
   for(size_t i = 0; i < chicken.size(); ++i){
@@ -35,11 +39,28 @@ Engine::Engine() :
   chicken({new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken"),
     new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken"), new Sprite("Chicken")}),
   girl({new TwowaymultiSprite("Girl")}),
+  drops(),
+  girlPlayer(new SubjectSprite("Girl")),
+  strategies(),
+  currentStrategy(0),
   currentSprite(0),
+  collision(false),
   makeVideo( false )
 {
+  int n = Gamedata::getInstance().getXmlInt("numberOfDrops");
+  drops.reserve(n);
+  Vector2f pos = girlPlayer->getPosition();
+  int w = girlPlayer->getScaledWidth();
+  int h = girlPlayer->getScaledHeight();
+  for (int i = 0; i < n; ++i) {
+    drops.push_back( new SmartSprite("Drop", pos, w, h) );
+    girlPlayer->attach( drops[i] );
+  }
+  strategies.push_back( new RectangularCollisionStrategy );
+  strategies.push_back( new PerPixelCollisionStrategy );
+
   Viewport::getInstance().setfps(0);
-  Viewport::getInstance().setObjectToTrack(girl[0]);
+  Viewport::getInstance().setObjectToTrack(girlPlayer);
   std::cout << "Loading complete" << std::endl;
 }
 
@@ -57,9 +78,27 @@ void Engine::draw() const {
   for(size_t j = 0; j < girl.size(); ++j){
      girl.at(j)->draw();
   }
+  for ( const Drawable* drop : drops ) {
+     drop->draw();
+  }
+  strategies[currentStrategy]->draw();
+  girlPlayer->draw();
 
   viewport.draw();
   SDL_RenderPresent(renderer);
+}
+
+void Engine::checkForCollisions() {
+  auto it = drops.begin();
+  while ( it != drops.end() ) {
+    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) {
+      SmartSprite* doa = *it;
+      girlPlayer->detach(doa);
+      delete doa;
+      it = drops.erase(it);
+    }
+    else ++it;
+  }
 }
 
 void Engine::update(Uint32 ticks) {
@@ -68,6 +107,11 @@ void Engine::update(Uint32 ticks) {
   }
   for(size_t j = 0; j < girl.size(); ++j){
      girl.at(j)->update(ticks);
+  }
+  checkForCollisions();
+  girlPlayer->update(ticks);
+  for ( Drawable* drop : drops ) {
+    drop->update( ticks );
   }
 
   world.update();
@@ -82,7 +126,7 @@ void Engine::switchSprite(){
   ++currentSprite;
   currentSprite = currentSprite % 2;
   if ( currentSprite ) {
-    Viewport::getInstance().setObjectToTrack(girl[0]);
+    Viewport::getInstance().setObjectToTrack(girlPlayer);
   }
   else {
     Viewport::getInstance().setObjectToTrack(chicken[0]);
@@ -114,6 +158,9 @@ void Engine::play() {
           if ( clock.isPaused() ) clock.unpause();
           else clock.pause();
         }
+        if ( keystate[SDL_SCANCODE_M] ) {
+          currentStrategy = (1 + currentStrategy) % strategies.size();
+        }
         if ( keystate[SDL_SCANCODE_T] ) {
           switchSprite();
         }
@@ -129,10 +176,21 @@ void Engine::play() {
     }
 
     // In this section of the event loop we allow key bounce:
-
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
+      if (keystate[SDL_SCANCODE_A]) {
+        static_cast<Player*>(girlPlayer)->left();
+      }
+      if (keystate[SDL_SCANCODE_D]) {
+        static_cast<Player*>(girlPlayer)->right();
+      }
+      if (keystate[SDL_SCANCODE_W]) {
+        static_cast<Player*>(girlPlayer)->up();
+      }
+      if (keystate[SDL_SCANCODE_S]) {
+        static_cast<Player*>(girlPlayer)->down();
+      }
       setFps(clock.getFps());
       draw();
       update(ticks);
@@ -140,5 +198,6 @@ void Engine::play() {
         frameGen.makeFrame();
       }
     }
+
   }
 }
