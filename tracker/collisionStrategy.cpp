@@ -28,7 +28,7 @@ bool RectangularCollisionStrategy::execute(
   return true;
 }
 
-/*
+
 float MidPointCollisionStrategy::
 distance(float x1, float y1, float x2, float y2) const {
   float x = x1-x2, y = y1-y2;
@@ -54,7 +54,7 @@ bool MidPointCollisionStrategy::execute(
   float x2 = sprite2.getX() + width2/2;
   float y2 = sprite2.getY() + height2/2;
   return distance(x1, y1, x2, y2) < COLLISION_DISTANCE;
-}*/
+}
 
 
 void PerPixelCollisionStrategy::draw() const {

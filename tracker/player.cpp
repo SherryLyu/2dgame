@@ -1,7 +1,7 @@
 #include "player.h"
 #include "gamedata.h"
-//#include "imageFactory.h"
-#include "renderContext.h"
+#include "imageFactory.h"
+//#include "renderContext.h"
 
 void Player::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
@@ -61,13 +61,13 @@ void Player::draw() const {
 }
 
 void Player::jump(){
-  if (currentname.find("Reverse") != std::string::npos) {
-    images = (RenderContext::getInstance()->getImages ("GirlUpReverse"));
-  }else{
-    images = (RenderContext::getInstance()->getImages ("GirlUp"));
-  }
   
   if ( getY() > 0) {
+    if (currentname.find("Reverse") != std::string::npos) {
+      images = (ImageFactory::getInstance().getImages ("GirlUpReverse"));
+    }else{
+      images = (ImageFactory::getInstance().getImages ("GirlUp"));
+    }
     setVelocityY( -initialVelocity[1]);
   }
 }
@@ -79,8 +79,11 @@ void Player::stop() {
 void Player::right() { 
   if ( getX() < worldWidth-getScaledWidth()) {
     //reverse the direction of sprite
-    std::string temp = currentname.substr(0, currentname.find("Reverse"));
-    images = (RenderContext::getInstance()->getImages(temp));
+    if (currentname.find("Reverse") != std::string::npos) {
+      std::string temp = currentname.substr(0, currentname.find("Reverse"));
+      currentname = temp;
+    }
+    images = (ImageFactory::getInstance().getImages (currentname));
     setVelocityX(initialVelocity[0]);
   }
 } 
@@ -90,7 +93,7 @@ void Player::left()  {
     if (currentname.find("Reverse") == std::string::npos) {
       currentname += "Reverse";
     }
-    images = (RenderContext::getInstance()->getImages (currentname));
+    images = (ImageFactory::getInstance().getImages (currentname));
     
     setVelocityX(-initialVelocity[0]);
   }
@@ -101,13 +104,16 @@ void Player::up()    {
   }
 } 
 void Player::down()  {
-  if ( getY() < worldHeight-getScaledHeight() && getY() < 200) {
-    setVelocityY( initialVelocity[1]);
+  if ( getY() < 345) {
     if (currentname.find("Reverse") != std::string::npos) {
-      images = (RenderContext::getInstance()->getImages ("GirlDownReverse"));
+      std::string temp = currentname.substr(0, currentname.find("Reverse"));
+      images = (ImageFactory::getInstance().getImages (temp+"DownReverse"));
     }else{
-      images = (RenderContext::getInstance()->getImages ("GirlDown"));
+      images = (ImageFactory::getInstance().getImages (currentname+"Down"));
     }
+    setVelocityY( initialVelocity[1]);
+  }else{
+    images = (ImageFactory::getInstance().getImages (currentname));
   }
 }
 

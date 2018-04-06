@@ -28,8 +28,11 @@ Engine::~Engine() {
   for( Drawable* rabbit : rabbits){
     delete rabbit;
   }
-  for( SmartSprite* drop : drops){
-    delete drop;
+  for( SmartSprite* dropone : dropsone){
+    delete dropone;
+  }
+  for( SmartSprite* droptwo : dropstwo){
+    delete droptwo;
   }
   for ( CollisionStrategy* strategy : strategies ) {
     delete strategy;
@@ -55,27 +58,31 @@ Engine::Engine() :
   rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
   chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
   set("set", Gamedata::getInstance().getXmlInt("set/factor")),
-  drops(),
+  dropsone(),
+  dropstwo(),
   girlPlayer(new SubjectSprite("Girl")),
   strategies(),
   currentStrategy(0),
   currentSprite(0),
   collision(false),
   makeVideo( false ),
-  showHud( false ), 
-  jump( false )
+  showHud( false )
 {
   int n = Gamedata::getInstance().getXmlInt("numberOfDrops");
-  drops.reserve(n);
+  dropsone.reserve(n);
+  dropstwo.reserve(n);
   Vector2f pos = girlPlayer->getPosition();
   int w = girlPlayer->getScaledWidth();
   int h = girlPlayer->getScaledHeight();
   for (int i = 0; i < n; ++i) {
-    drops.push_back( new SmartSprite("Drop", pos, w, h) );
-    girlPlayer->attach( drops[i] );
+    dropsone.push_back( new SmartSprite("DropOne", pos, w, h) );
+    dropstwo.push_back( new SmartSprite("DropTwo", pos, w, h) );
+    girlPlayer->attach( dropsone[i] );
+    girlPlayer->attach( dropstwo[i] );
   }
   strategies.push_back( new RectangularCollisionStrategy );
   strategies.push_back( new PerPixelCollisionStrategy );
+  strategies.push_back( new MidPointCollisionStrategy );
   Viewport::getInstance().setfps(0);
   Viewport::getInstance().setObjectToTrack(girlPlayer);
   std::cout << "Loading complete" << std::endl;
@@ -104,8 +111,11 @@ void Engine::draw() const {
      chicken->draw();
   }
   set.draw();
-  for ( const Drawable* drop : drops ) {
-     drop->draw();
+  for ( const Drawable* dropone : dropsone ) {
+     dropone->draw();
+  }
+  for ( const Drawable* droptwo : dropstwo ) {
+     droptwo->draw();
   }
   strategies[currentStrategy]->draw();
   girlPlayer->draw();
@@ -115,15 +125,25 @@ void Engine::draw() const {
 }
 
 void Engine::checkForCollisions() {
-  auto it = drops.begin();
-  while ( it != drops.end() ) {
+  auto it = dropsone.begin();
+  while ( it != dropsone.end() ) {
     if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) {
       SmartSprite* doa = *it;
       girlPlayer->detach(doa);
       delete doa;
-      it = drops.erase(it);
+      it = dropsone.erase(it);
     }
     else ++it;
+  }
+  auto ittwo = dropstwo.begin();
+  while ( ittwo != dropstwo.end() ) {
+    if ( strategies[currentStrategy]->execute(*girlPlayer, **ittwo) ) {
+      SmartSprite* doatwo = *ittwo;
+      girlPlayer->detach(doatwo);
+      delete doatwo;
+      ittwo = dropstwo.erase(ittwo);
+    }
+    else ++ittwo;
   }
 }
 
@@ -143,10 +163,12 @@ void Engine::update(Uint32 ticks) {
   set.update();
   checkForCollisions();
   girlPlayer->update(ticks);
-  for ( Drawable* drop : drops ) {
-    drop->update( ticks );
+  for ( Drawable* dropone : dropsone ) {
+    dropone->update( ticks );
   }
-
+  for ( Drawable* droptwo : dropstwo ) {
+    droptwo->update( ticks );
+  }
   world.update();
   cloud.update();
   tower.update();

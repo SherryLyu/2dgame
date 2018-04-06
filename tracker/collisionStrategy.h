@@ -15,14 +15,14 @@ public:
   virtual void draw() const;
 };
 
-/*class MidPointCollisionStrategy : public CollisionStrategy {
+class MidPointCollisionStrategy : public CollisionStrategy {
 public:
   MidPointCollisionStrategy() {}
   virtual bool execute(const Drawable&, const Drawable&) const;
   virtual void draw() const;
   float distance(float, float, float, float) const;
 };
-*/
+
 class PerPixelCollisionStrategy : public CollisionStrategy {
 public:
   PerPixelCollisionStrategy() {}

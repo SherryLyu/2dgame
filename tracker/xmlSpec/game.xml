@@ -109,8 +109,8 @@
 
 <GirlUp>
   <file>assets/girljumpup.png</file>
-  <frames>4</frames>
-  <frameInterval>300</frameInterval>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
@@ -118,8 +118,8 @@
 
 <GirlUpReverse>
   <file>assets/girljumpupreverse.png</file>
-  <frames>4</frames>
-  <frameInterval>300</frameInterval>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
@@ -127,8 +127,8 @@
 
 <GirlDown>
   <file>assets/girljumpdown.png</file>
-  <frames>4</frames>
-  <frameInterval>300</frameInterval>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
@@ -136,8 +136,8 @@
 
 <GirlDownReverse>
   <file>assets/girljumpdownreverse.png</file>
-  <frames>4</frames>
-  <frameInterval>300</frameInterval>
+  <frames>8</frames>
+  <frameInterval>200</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
@@ -226,14 +226,23 @@
   <transparency>false</transparency>
 </set>
 
-<Drop>
+<DropOne>
   <file>assets/smallb.png</file>
-  <startLoc x="700" y="-150"/>
+  <startLoc x="350" y="-100"/>
   <speedX>0</speedX>
   <speedY>50</speedY>
-  <safeDistance>100</safeDistance>
+  <safeDistance>150</safeDistance>
   <transparency>false</transparency>
-</Drop>
+</DropOne>
+
+<DropTwo>
+  <file>assets/smallb.png</file>
+  <startLoc x="750" y="-100"/>
+  <speedX>0</speedX>
+  <speedY>50</speedY>
+  <safeDistance>150</safeDistance>
+  <transparency>false</transparency>
+</DropTwo>
 
 <Dialogue>
   <file>assets/dialogue.png</file>

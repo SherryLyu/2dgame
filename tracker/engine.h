@@ -43,7 +43,8 @@ private:
   std::vector<Drawable*> rabbits;
   std::vector<Drawable*> chickens;
   World set;
-  std::vector<SmartSprite*> drops;
+  std::vector<SmartSprite*> dropsone;
+  std::vector<SmartSprite*> dropstwo;
   SubjectSprite* girlPlayer;
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;
@@ -52,7 +53,6 @@ private:
 
   bool makeVideo;
   bool showHud;
-  bool jump;
 
   void draw() const;
   void update(Uint32);
