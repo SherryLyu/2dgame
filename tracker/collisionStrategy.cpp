@@ -93,7 +93,6 @@ SDL_Surface* scaleSurface(const SDL_Surface* const surf, int width, int height) 
   SDL_Rect rect = {0,0,width,height};
   int flag = SDL_BlitScaled(const_cast<SDL_Surface*>(surf),nullptr,sub,&rect);
   if ( flag < 0 ) throw( std::string("SDL_BlitScaled failed!") );
-  //std::cout << width  << ", " << surf->w << ", " << sub->w << std::endl;
 
   // Set the blend mode back to original
   SDL_SetSurfaceBlendMode(const_cast<SDL_Surface*>(surf), oldBlendMode);
@@ -105,7 +104,7 @@ bool PerPixelCollisionStrategy::execute(
 
   RectangularCollisionStrategy strategy;
   if ( not strategy.execute(obj1, obj2) ) return false;
-  // If we got this far, we know that the sprite rectangles intersect!
+  // If we got this far, we know that the sprite rectangles intersect
 
   Vector2f p1 = obj1.getPosition() - Viewport::getInstance().getPosition();
   Vector2f p2 = obj2.getPosition() - Viewport::getInstance().getPosition();

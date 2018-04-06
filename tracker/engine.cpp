@@ -95,6 +95,7 @@ void Engine::draw() const {
   tree.draw();
   ground.draw();
   
+  //check if show hud
   if(showHud){
     hud.draw(renderer);
   }
@@ -124,6 +125,7 @@ void Engine::draw() const {
   SDL_RenderPresent(renderer);
 }
 
+//collision detection
 void Engine::checkForCollisions() {
   auto it = dropsone.begin();
   while ( it != dropsone.end() ) {
@@ -161,7 +163,10 @@ void Engine::update(Uint32 ticks) {
      chickens.at(i)->update(ticks);
   }
   set.update();
+
+  //collision detection
   checkForCollisions();
+
   girlPlayer->update(ticks);
   for ( Drawable* dropone : dropsone ) {
     dropone->update( ticks );
@@ -246,6 +251,7 @@ void Engine::play() {
       if (keystate[SDL_SCANCODE_D]) {
         static_cast<Player*>(girlPlayer)->right();
       }
+      //jump 
       if (keystate[SDL_SCANCODE_SPACE]) {
         static_cast<Player*>(girlPlayer)->jump();
       }else{

@@ -1,7 +1,6 @@
 #include "player.h"
 #include "gamedata.h"
 #include "imageFactory.h"
-//#include "renderContext.h"
 
 void Player::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
@@ -104,7 +103,7 @@ void Player::up()    {
   }
 } 
 void Player::down()  {
-  if ( getY() < 345) {
+  if ( getY() < 345) {//check if in jump condition
     if (currentname.find("Reverse") != std::string::npos) {
       std::string temp = currentname.substr(0, currentname.find("Reverse"));
       images = (ImageFactory::getInstance().getImages (temp+"DownReverse"));
@@ -112,7 +111,7 @@ void Player::down()  {
       images = (ImageFactory::getInstance().getImages (currentname+"Down"));
     }
     setVelocityY( initialVelocity[1]);
-  }else{
+  }else{//check if hit the ground
     images = (ImageFactory::getInstance().getImages (currentname));
   }
 }

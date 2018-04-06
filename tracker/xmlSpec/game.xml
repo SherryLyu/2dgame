@@ -30,25 +30,25 @@
 </back>
 
 <tower>
-  <file>assets/towertemp1.png</file>
+  <file>assets/tower.png</file>
   <factor>3</factor>
   <transparency>false</transparency>
 </tower>
 
 <cloud>
-  <file>assets/cloudtemp3.png</file>
+  <file>assets/cloud.png</file>
   <factor>2</factor>
   <transparency>false</transparency>
 </cloud>
 
 <tree>
-  <file>assets/treetemp3.png</file>
+  <file>assets/tree.png</file>
   <factor>2</factor>
   <transparency>false</transparency>
 </tree>
 
 <ground>
-  <file>assets/groundtemp3.png</file>
+  <file>assets/ground.png</file>
   <factor>1</factor>
   <transparency>false</transparency>
 </ground>
@@ -72,13 +72,6 @@
   <alpha>0</alpha>
 </customfont>
 
-<fontforhud name="fontforhud">
-  <red>155</red>
-  <green>62</green>
-  <blue>41</blue>
-  <alpha>0</alpha>
-</fontforhud>
-
 <Girl>
   <file>assets/girl.png</file>
   <startLoc x="0" y="345"/>
@@ -100,10 +93,6 @@
 
 <GirlStop>
   <file>assets/girlstop.png</file>
-  <frames>1</frames>
-  <frameInterval>200</frameInterval>
-  <speedX>0</speedX>
-  <speedY>0</speedY>
   <transparency>false</transparency>
 </GirlStop>
 
@@ -142,7 +131,6 @@
   <speedY>0</speedY>
   <transparency>false</transparency>
 </GirlDownReverse>
-
 
 <Chicken>
   <file>assets/smallchicken.png</file>
@@ -227,7 +215,7 @@
 </set>
 
 <DropOne>
-  <file>assets/smallb.png</file>
+  <file>assets/bubble.png</file>
   <startLoc x="350" y="-100"/>
   <speedX>0</speedX>
   <speedY>50</speedY>
@@ -236,7 +224,7 @@
 </DropOne>
 
 <DropTwo>
-  <file>assets/smallb.png</file>
+  <file>assets/bubble.png</file>
   <startLoc x="750" y="-100"/>
   <speedX>0</speedX>
   <speedY>50</speedY>
