@@ -38,10 +38,11 @@ private:
   Viewport& viewport;
 
   //polymorphic vector for coherent animation
-  std::vector<Drawable*> chickens;
   std::vector<Drawable*> horses;
   std::vector<Drawable*> cows;
   std::vector<Drawable*> rabbits;
+  std::vector<Drawable*> chickens;
+  World set;
   std::vector<SmartSprite*> drops;
   SubjectSprite* girlPlayer;
   std::vector<CollisionStrategy*> strategies;
@@ -51,6 +52,7 @@ private:
 
   bool makeVideo;
   bool showHud;
+  bool jump;
 
   void draw() const;
   void update(Uint32);

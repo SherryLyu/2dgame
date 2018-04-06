@@ -60,8 +60,19 @@ void Player::draw() const {
   images[currentFrame]->draw(getX(), getY(), getScale());
 }
 
+void Player::jump(){
+  if (currentname.find("Reverse") != std::string::npos) {
+    images = (RenderContext::getInstance()->getImages ("GirlUpReverse"));
+  }else{
+    images = (RenderContext::getInstance()->getImages ("GirlUp"));
+  }
+  
+  if ( getY() > 0) {
+    setVelocityY( -initialVelocity[1]);
+  }
+}
+
 void Player::stop() { 
-  //images = (RenderContext::getInstance()->getImages (currentname +"Stop"));
   setVelocity( Vector2f(0, 0) );
 }
 
@@ -76,7 +87,11 @@ void Player::right() {
 void Player::left()  { 
   if ( getX() > 0) {
     //reverse the direction of sprite
-    images = (RenderContext::getInstance()->getImages (currentname +"Reverse"));
+    if (currentname.find("Reverse") == std::string::npos) {
+      currentname += "Reverse";
+    }
+    images = (RenderContext::getInstance()->getImages (currentname));
+    
     setVelocityX(-initialVelocity[0]);
   }
 } 
@@ -85,9 +100,14 @@ void Player::up()    {
     setVelocityY( -initialVelocity[1] );
   }
 } 
-void Player::down()  { 
-  if ( getY() < worldHeight-getScaledHeight()) {
-    setVelocityY( initialVelocity[1] );
+void Player::down()  {
+  if ( getY() < worldHeight-getScaledHeight() && getY() < 200) {
+    setVelocityY( initialVelocity[1]);
+    if (currentname.find("Reverse") != std::string::npos) {
+      images = (RenderContext::getInstance()->getImages ("GirlDownReverse"));
+    }else{
+      images = (RenderContext::getInstance()->getImages ("GirlDown"));
+    }
   }
 }
 

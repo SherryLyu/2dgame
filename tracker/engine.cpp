@@ -50,10 +50,11 @@ Engine::Engine() :
   hud(),
   viewport( Viewport::getInstance() ),
   //use initialization list 
-  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
   horses({new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse")}),
   cows({new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow")}),
   rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
+  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
+  set("set", Gamedata::getInstance().getXmlInt("set/factor")),
   drops(),
   girlPlayer(new SubjectSprite("Girl")),
   strategies(),
@@ -61,7 +62,8 @@ Engine::Engine() :
   currentSprite(0),
   collision(false),
   makeVideo( false ),
-  showHud( false )
+  showHud( false ), 
+  jump( false )
 {
   int n = Gamedata::getInstance().getXmlInt("numberOfDrops");
   drops.reserve(n);
@@ -74,7 +76,6 @@ Engine::Engine() :
   }
   strategies.push_back( new RectangularCollisionStrategy );
   strategies.push_back( new PerPixelCollisionStrategy );
-
   Viewport::getInstance().setfps(0);
   Viewport::getInstance().setObjectToTrack(girlPlayer);
   std::cout << "Loading complete" << std::endl;
@@ -90,19 +91,19 @@ void Engine::draw() const {
   if(showHud){
     hud.draw(renderer);
   }
-
-  for(size_t i = 0; i < chickens.size(); ++i){
-     chickens.at(i)->draw();
+  for ( const Drawable* horse : horses ) {
+     horse->draw();
   }
-  for(size_t i = 0; i < horses.size(); ++i){
-     horses.at(i)->draw();
+  for ( const Drawable* cow : cows ) {
+     cow->draw();
   }
-  for(size_t i = 0; i < cows.size(); ++i){
-     cows.at(i)->draw();
+  for ( const Drawable* rabbit : rabbits ) {
+     rabbit->draw();
   }
-  for(size_t i = 0; i < rabbits.size(); ++i){
-     rabbits.at(i)->draw();
+  for ( const Drawable* chicken : chickens ) {
+     chicken->draw();
   }
+  set.draw();
   for ( const Drawable* drop : drops ) {
      drop->draw();
   }
@@ -127,9 +128,6 @@ void Engine::checkForCollisions() {
 }
 
 void Engine::update(Uint32 ticks) {
-  for(size_t i = 0; i < chickens.size(); ++i){
-     chickens.at(i)->update(ticks);
-  }
   for(size_t i = 0; i < horses.size(); ++i){
      horses.at(i)->update(ticks);
   }
@@ -139,6 +137,10 @@ void Engine::update(Uint32 ticks) {
   for(size_t i = 0; i < rabbits.size(); ++i){
      rabbits.at(i)->update(ticks);
   }
+  for(size_t i = 0; i < chickens.size(); ++i){
+     chickens.at(i)->update(ticks);
+  }
+  set.update();
   checkForCollisions();
   girlPlayer->update(ticks);
   for ( Drawable* drop : drops ) {
@@ -222,10 +224,9 @@ void Engine::play() {
       if (keystate[SDL_SCANCODE_D]) {
         static_cast<Player*>(girlPlayer)->right();
       }
-      if (keystate[SDL_SCANCODE_W]) {
-        static_cast<Player*>(girlPlayer)->up();
-      }
-      if (keystate[SDL_SCANCODE_S]) {
+      if (keystate[SDL_SCANCODE_SPACE]) {
+        static_cast<Player*>(girlPlayer)->jump();
+      }else{
         static_cast<Player*>(girlPlayer)->down();
       }
       setFps(clock.getFps());
@@ -235,6 +236,5 @@ void Engine::play() {
         frameGen.makeFrame();
       }
     }
-
   }
 }

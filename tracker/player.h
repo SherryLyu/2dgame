@@ -35,6 +35,7 @@ public:
   void up();
   void down();
   void stop();
+  void jump();
 
 private:
   std::vector<Image *> images;
