@@ -14,6 +14,8 @@ void Hud::draw(SDL_Renderer* renderer) const {
     SDL_Rect outputGirl = { 650, 170, 64, 127 };
     SDL_RenderCopy(renderer, textureGirl, NULL, &outputGirl);
 
+    SDL_DestroyTexture(textureBox);
+    SDL_DestroyTexture(textureGirl);
 
 	IoMod::getInstance().writeText("a: turn left", 255, 160);
 	IoMod::getInstance().writeText("d: turn right", 255, 200);

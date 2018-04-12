@@ -99,7 +99,7 @@ void Player::left()  {
 } 
 void Player::up()    { 
   if ( getY() > 0) {
-    setVelocityY( -initialVelocity[1] );
+    setVelocityY( -initialVelocity[1]*0.2 );
   }
 } 
 void Player::down()  {
@@ -110,7 +110,7 @@ void Player::down()  {
     }else{
       images = (ImageFactory::getInstance().getImages (currentname+"Down"));
     }
-    setVelocityY( initialVelocity[1]);
+    setVelocityY( initialVelocity[1]*1.2);
   }else{//check if hit the ground
     images = (ImageFactory::getInstance().getImages (currentname));
   }

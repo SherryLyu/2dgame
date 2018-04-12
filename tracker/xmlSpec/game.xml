@@ -208,6 +208,25 @@
   <transparency>false</transparency>
 </RabbitReverse>
 
+<Bird>
+  <file>assets/bird.png</file>
+  <startLoc x="350" y="-100"/>
+  <frames>3</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Bird>
+
+<BirdReverse>
+  <file>assets/birdreverse.png</file>
+  <frames>3</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</BirdReverse>
+
 <set>
   <file>assets/set.png</file>
   <factor>1</factor>
