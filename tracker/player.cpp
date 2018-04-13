@@ -1,6 +1,7 @@
 #include "player.h"
 #include "gamedata.h"
 #include "imageFactory.h"
+#include "explodingSprite.h"
 
 void Player::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
@@ -10,6 +11,8 @@ void Player::advanceFrame(Uint32 ticks) {
 	}
 }
 
+Player::~Player( ) { if (explosion) delete explosion; }
+
 Player::Player( const std::string& name) :
   Drawable(name, 
            Vector2f(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
@@ -18,6 +21,7 @@ Player::Player( const std::string& name) :
                     Gamedata::getInstance().getXmlInt(name+"/speedY"))
            ),
   images( ImageFactory::getInstance().getImages(name) ),
+  explosion(nullptr),
 
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
@@ -32,6 +36,7 @@ Player::Player( const std::string& name) :
 Player::Player(const Player& s) :
   Drawable(s), 
   images(s.images),
+  explosion(s.explosion),
   currentFrame(s.currentFrame),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
@@ -45,6 +50,7 @@ Player::Player(const Player& s) :
 Player& Player::operator=(const Player& s) {
   Drawable::operator=(s);
   images = (s.images);
+  explosion = s.explosion;
   currentFrame = (s.currentFrame);
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
@@ -55,8 +61,17 @@ Player& Player::operator=(const Player& s) {
   return *this;
 }
 
+void Player::explode() {
+  if ( !explosion ) {
+    Sprite 
+    sprite(getName(), getPosition(), getVelocity(), images[currentFrame]);
+    explosion = new ExplodingSprite(sprite);
+  }
+}
+
 void Player::draw() const { 
-  images[currentFrame]->draw(getX(), getY(), getScale());
+  if ( explosion ) explosion->draw();
+  else images[currentFrame]->draw(getX(), getY(), getScale());
 }
 
 void Player::jump(){
@@ -117,6 +132,15 @@ void Player::down()  {
 }
 
 void Player::update(Uint32 ticks) { 
+  if ( explosion ) {
+    explosion->update(ticks);
+    if ( explosion->chunkCount() == 0 ) {
+      delete explosion;
+      explosion = NULL;
+    }
+    return;
+  }
+
   advanceFrame(ticks);
 
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;

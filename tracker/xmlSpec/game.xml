@@ -73,13 +73,17 @@
 </customfont>
 
 <Girl>
-  <file>assets/girl.png</file>
+  <file>assets/hit.png</file>
   <startLoc x="0" y="345"/>
   <frames>8</frames>
   <frameInterval>300</frameInterval>
   <speedX>200</speedX>
   <speedY>300</speedY>
   <transparency>false</transparency>
+  <chunk>
+    <size>100</size>
+    <distance>200</distance>
+  </chunk>
 </Girl>
 
 <GirlReverse>
@@ -89,6 +93,10 @@
   <speedX>200</speedX>
   <speedY>300</speedY>
   <transparency>false</transparency>
+  <chunk>
+    <size>100</size>
+    <distance>200</distance>
+  </chunk>
 </GirlReverse>
 
 <GirlStop>

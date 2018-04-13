@@ -224,6 +224,9 @@ void Engine::play() {
         if ( keystate[SDL_SCANCODE_T] ) {
           switchSprite();
         }
+        if ( keystate[SDL_SCANCODE_E] ) {
+          girlPlayer->explode();
+        }
         if ( keystate[SDL_SCANCODE_F1] && !showHud) {
           showHud = true;
         }

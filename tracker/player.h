@@ -5,11 +5,14 @@
 #include <cmath>
 #include "drawable.h"
 
+class ExplodingSprite;
+
 class Player : public Drawable {
 public:
   Player(const std::string&);
   Player(const Player&);
-
+  ~Player();
+  
   virtual void draw() const;
   virtual void update(Uint32 ticks);
 
@@ -37,8 +40,11 @@ public:
   void stop();
   void jump();
 
+  virtual void explode();
+
 private:
   std::vector<Image *> images;
+  ExplodingSprite* explosion;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
