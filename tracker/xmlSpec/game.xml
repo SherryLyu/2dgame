@@ -4,7 +4,7 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfDrops>100</numberOfDrops>
+<numberOfBirds>1</numberOfBirds>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -19,7 +19,7 @@
 </view>
 
 <world>
-  <width>1500</width>
+  <width>864</width>
   <height>480</height>
 </world>
 
@@ -55,7 +55,7 @@
 
 <font name="font">
   <file>fonts/gooddog.otf</file>
-  <size>40</size>
+  <size>30</size>
   <red>169</red>
   <green>33</green>
   <blue>109</blue>
@@ -65,38 +65,30 @@
 <!-- custom color font -->
 <customfont name="customfont">
   <file>fonts/gooddog.otf</file>
-  <size>40</size>
-  <red>169</red>
-  <green>33</green>
-  <blue>109</blue>
+  <size>30</size>
+  <red>88</red>
+  <green>24</green>
+  <blue>69</blue>
   <alpha>0</alpha>
 </customfont>
 
 <Girl>
-  <file>assets/hit.png</file>
+  <file>assets/girl.png</file>
   <startLoc x="0" y="345"/>
   <frames>8</frames>
-  <frameInterval>300</frameInterval>
+  <frameInterval>180</frameInterval>
   <speedX>200</speedX>
-  <speedY>300</speedY>
+  <speedY>100</speedY>
   <transparency>false</transparency>
-  <chunk>
-    <size>100</size>
-    <distance>200</distance>
-  </chunk>
 </Girl>
 
 <GirlReverse>
   <file>assets/girlreverse.png</file>
   <frames>8</frames>
-  <frameInterval>300</frameInterval>
+  <frameInterval>180</frameInterval>
   <speedX>200</speedX>
-  <speedY>300</speedY>
+  <speedY>100</speedY>
   <transparency>false</transparency>
-  <chunk>
-    <size>100</size>
-    <distance>200</distance>
-  </chunk>
 </GirlReverse>
 
 <GirlStop>
@@ -104,41 +96,78 @@
   <transparency>false</transparency>
 </GirlStop>
 
+<GirlStand>
+  <file>assets/girlstand.png</file>
+  <frames>8</frames>
+  <frameInterval>180</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlStand>
+
+<GirlStandReverse>
+  <file>assets/girlstandreverse.png</file>
+  <frames>8</frames>
+  <frameInterval>180</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlStandReverse>
+
 <GirlUp>
   <file>assets/girljumpup.png</file>
   <frames>8</frames>
-  <frameInterval>200</frameInterval>
+  <frameInterval>180</frameInterval>
   <speedX>0</speedX>
-  <speedY>0</speedY>
+  <speedY>100</speedY>
   <transparency>false</transparency>
 </GirlUp>
 
 <GirlUpReverse>
   <file>assets/girljumpupreverse.png</file>
   <frames>8</frames>
-  <frameInterval>200</frameInterval>
+  <frameInterval>180</frameInterval>
   <speedX>0</speedX>
-  <speedY>0</speedY>
+  <speedY>100</speedY>
   <transparency>false</transparency>
 </GirlUpReverse>
 
 <GirlDown>
   <file>assets/girljumpdown.png</file>
   <frames>8</frames>
-  <frameInterval>200</frameInterval>
+  <frameInterval>180</frameInterval>
   <speedX>0</speedX>
-  <speedY>0</speedY>
+  <speedY>100</speedY>
   <transparency>false</transparency>
 </GirlDown>
 
 <GirlDownReverse>
   <file>assets/girljumpdownreverse.png</file>
   <frames>8</frames>
-  <frameInterval>200</frameInterval>
+  <frameInterval>180</frameInterval>
+  <speedX>0</speedX>
+  <speedY>100</speedY>
+  <transparency>false</transparency>
+</GirlDownReverse>
+
+<GirlHit>
+  <file>assets/hit.png</file>
+  <frames>8</frames>
+  <frameInterval>250</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
-</GirlDownReverse>
+</GirlHit>
+
+<GirlHitReverse>
+  <file>assets/hitreverse.png</file>
+  <frames>8</frames>
+  <frameInterval>250</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlHitReverse>
+
 
 <Chicken>
   <file>assets/smallchicken.png</file>
@@ -197,6 +226,44 @@
   <transparency>false</transparency>
 </CowReverse>
 
+<Sheep>
+  <file>assets/sheep.png</file>
+  <startLoc x="50" y="350"/>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Sheep>
+
+<SheepReverse>
+  <file>assets/sheepreverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</SheepReverse>
+
+<Pig>
+  <file>assets/pig.png</file>
+  <startLoc x="50" y="345"/>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</Pig>
+
+<PigReverse>
+  <file>assets/pigreverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <speedX>200</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</PigReverse>
+
 <Rabbit>
   <file>assets/rabbit.png</file>
   <startLoc x="150" y="400"/>
@@ -217,23 +284,19 @@
 </RabbitReverse>
 
 <Bird>
-  <file>assets/bird.png</file>
-  <startLoc x="350" y="-100"/>
-  <frames>3</frames>
+  <file>assets/birddown.png</file>
+  <startLoc x="350" y="0"/>
+  <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
-  <speedY>0</speedY>
+  <speedX>25</speedX>
+  <speedY>50</speedY>
+  <chunk>
+    <size>50</size>
+    <distance>200</distance>
+  </chunk>
+  <safeDistance>150</safeDistance>
   <transparency>false</transparency>
 </Bird>
-
-<BirdReverse>
-  <file>assets/birdreverse.png</file>
-  <frames>3</frames>
-  <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
-  <speedY>0</speedY>
-  <transparency>false</transparency>
-</BirdReverse>
 
 <set>
   <file>assets/set.png</file>
@@ -249,15 +312,6 @@
   <safeDistance>150</safeDistance>
   <transparency>false</transparency>
 </DropOne>
-
-<DropTwo>
-  <file>assets/bubble.png</file>
-  <startLoc x="750" y="-100"/>
-  <speedX>0</speedX>
-  <speedY>50</speedY>
-  <safeDistance>150</safeDistance>
-  <transparency>false</transparency>
-</DropTwo>
 
 <Dialogue>
   <file>assets/dialogue.png</file>

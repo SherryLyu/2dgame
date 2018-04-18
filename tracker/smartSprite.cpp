@@ -19,7 +19,7 @@ void SmartSprite::goDown()  { setVelocityY( fabs(getVelocityY()) );  }
 
 SmartSprite::SmartSprite(const std::string& name, const Vector2f& pos, 
   int w, int h) :
-  Sprite(name),
+  MultiSprite(name),
   playerPos(pos),
   playerWidth(w),
   playerHeight(h),
@@ -29,7 +29,7 @@ SmartSprite::SmartSprite(const std::string& name, const Vector2f& pos,
 
 
 SmartSprite::SmartSprite(const SmartSprite& s) : 
-  Sprite(s),
+  MultiSprite(s),
   playerPos(s.playerPos),
   playerWidth(s.playerWidth),
   playerHeight(s.playerHeight),
@@ -37,8 +37,8 @@ SmartSprite::SmartSprite(const SmartSprite& s) :
   safeDistance(s.safeDistance)
 {}
 
-void SmartSprite::update(Uint32 ticks) { 
-  Sprite::update(ticks);
+void SmartSprite::update(Uint32 ticks) {
+  MultiSprite::update(ticks);
   float x= getX()+getImage()->getWidth()/2;
   float y= getY()+getImage()->getHeight()/2;
   float ex= playerPos[0]+playerWidth/2;
@@ -49,7 +49,7 @@ void SmartSprite::update(Uint32 ticks) {
     if(distanceToEnemy < safeDistance) currentMode = EVADE;
   }
   else if  ( currentMode == EVADE ) {
-    if(distanceToEnemy > safeDistance) currentMode=NORMAL;
+    if(distanceToEnemy > safeDistance) currentMode = NORMAL;
     else {
       if ( x < ex ) goLeft();
       if ( x > ex ) goRight();

@@ -35,18 +35,21 @@ void Viewport::draw() const {
   //allow user to modify font color by modifying XML values
   std::ostringstream ss;
   ss << currentfps;
-  SDL_Color fpscolor;
+  /*SDL_Color fpscolor;
   fpscolor.r = Gamedata::getInstance().getXmlInt("customfont/red");
   fpscolor.g = Gamedata::getInstance().getXmlInt("customfont/green");
   fpscolor.b = Gamedata::getInstance().getXmlInt("customfont/blue");
-  fpscolor.a = Gamedata::getInstance().getXmlInt("customfont/alpha");
+  fpscolor.a = Gamedata::getInstance().getXmlInt("customfont/alpha");*/
   //write username and fps to screen
+
   IoMod::getInstance().
-    writeText("Current fps: "+ss.str(), 30, 30, fpscolor);
+    writeText("Current fps: "+ss.str(), 30, 30);
   IoMod::getInstance().
-    writeText("Creator name: "+fullname, 30, 380);
+    writeText("Creator name: "+fullname, 30, 400);
   IoMod::getInstance().
-    writeText("Username: "+username, 30, 420);
+    writeText("Username: "+username, 30, 430);
+  IoMod::getInstance().
+    writeText("Hit F1 for open/close HUD", 615, 30);
 }
 
 void Viewport::update() {

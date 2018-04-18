@@ -6,8 +6,9 @@
 #include <iomanip>
 #include "sprite.h"
 #include "twowaymultisprite.h"
-#include "smartSprite.h"
-#include "subjectSprite.h"
+//#include "smartSprite.h"
+#include "multisprite.h"
+//#include "subjectSprite.h"
 #include "player.h"
 #include "gamedata.h"
 #include "engine.h"
@@ -16,8 +17,21 @@
 
 Engine::~Engine() { 
   delete girlPlayer;
+
+  for( Drawable* bird : birds){
+    delete bird;
+  }
   for( Drawable* chicken : chickens){
     delete chicken;
+  }
+  for( Drawable* rabbit : rabbits){
+    delete rabbit;
+  }
+  for( Drawable* pig : pigs){
+    delete pig;
+  }
+  for( Drawable* sheep : sheeps){
+    delete sheep;
   }
   for( Drawable* horse : horses){
     delete horse;
@@ -25,15 +39,8 @@ Engine::~Engine() {
   for( Drawable* cow : cows){
     delete cow;
   }
-  for( Drawable* rabbit : rabbits){
-    delete rabbit;
-  }
-  for( SmartSprite* dropone : dropsone){
-    delete dropone;
-  }
-  for( SmartSprite* droptwo : dropstwo){
-    delete droptwo;
-  }
+  
+
   for ( CollisionStrategy* strategy : strategies ) {
     delete strategy;
   }
@@ -53,14 +60,17 @@ Engine::Engine() :
   hud(),
   viewport( Viewport::getInstance() ),
   //use initialization list 
-  horses({new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse")}),
-  cows({new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow")}),
-  rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
-  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
+  horses({new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse")}),
+  cows({new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow")}),
+  sheeps({new TwowaymultiSprite("Sheep"), new TwowaymultiSprite("Sheep")}),
+  pigs({new TwowaymultiSprite("Pig"), new TwowaymultiSprite("Pig")}),
+  rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
+  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
+  //birds({new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird")}),
   set("set", Gamedata::getInstance().getXmlInt("set/factor")),
-  dropsone(),
-  dropstwo(),
-  girlPlayer(new SubjectSprite("Girl")),
+  birds(),
+ // dropstwo(),
+  girlPlayer(new Player("Girl")),
   strategies(),
   currentStrategy(0),
   currentSprite(0),
@@ -68,20 +78,20 @@ Engine::Engine() :
   makeVideo( false ),
   showHud( false )
 {
-  int n = Gamedata::getInstance().getXmlInt("numberOfDrops");
-  dropsone.reserve(n);
-  dropstwo.reserve(n);
-  Vector2f pos = girlPlayer->getPosition();
+  int n = Gamedata::getInstance().getXmlInt("numberOfBirds");
+  birds.reserve(n);
+  /*Vector2f pos = girlPlayer->getPosition();
   int w = girlPlayer->getScaledWidth();
   int h = girlPlayer->getScaledHeight();
   for (int i = 0; i < n; ++i) {
-    dropsone.push_back( new SmartSprite("DropOne", pos, w, h) );
-    dropstwo.push_back( new SmartSprite("DropTwo", pos, w, h) );
-    girlPlayer->attach( dropsone[i] );
-    girlPlayer->attach( dropstwo[i] );
+    birds.push_back( new SmartSprite("Bird", pos, w, h) );
+    girlPlayer->attach( birds[i] );;
+  }*/
+  for (int i = 0; i < n; ++i) {
+    birds.push_back( new MultiSprite("Bird") );
   }
-  strategies.push_back( new RectangularCollisionStrategy );
   strategies.push_back( new PerPixelCollisionStrategy );
+  strategies.push_back( new RectangularCollisionStrategy );
   strategies.push_back( new MidPointCollisionStrategy );
   Viewport::getInstance().setfps(0);
   Viewport::getInstance().setObjectToTrack(girlPlayer);
@@ -98,6 +108,13 @@ void Engine::draw() const {
   //check if show hud
   if(showHud){
     hud.draw(renderer);
+    strategies[currentStrategy]->draw();
+  }
+  for ( const Drawable* pig : pigs ) {
+     pig->draw();
+  }
+  for ( const Drawable* sheep : sheeps ) {
+     sheep->draw();
   }
   for ( const Drawable* horse : horses ) {
      horse->draw();
@@ -111,69 +128,59 @@ void Engine::draw() const {
   for ( const Drawable* chicken : chickens ) {
      chicken->draw();
   }
+
   set.draw();
-  for ( const Drawable* dropone : dropsone ) {
-     dropone->draw();
+
+  auto it = birds.begin();
+  while ( it != birds.end() ) {
+    //collision detection
+    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) {
+      (*it)->explode();
+    }
+    (*it)->draw();
+    ++it;
   }
-  for ( const Drawable* droptwo : dropstwo ) {
-     droptwo->draw();
-  }
-  strategies[currentStrategy]->draw();
+  
   girlPlayer->draw();
 
   viewport.draw();
   SDL_RenderPresent(renderer);
 }
 
-//collision detection
-void Engine::checkForCollisions() {
-  auto it = dropsone.begin();
-  while ( it != dropsone.end() ) {
-    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) {
-      SmartSprite* doa = *it;
-      girlPlayer->detach(doa);
-      delete doa;
-      it = dropsone.erase(it);
+void Engine::update(Uint32 ticks) {
+  girlPlayer->update(ticks);
+
+  auto it = birds.begin();
+  while ( it != birds.end() ) {
+    (*it)->update( ticks );
+    if ( (*it)->hasExploded() ) {
+      delete *it;
+      it = birds.erase(it);
     }
     else ++it;
   }
-  auto ittwo = dropstwo.begin();
-  while ( ittwo != dropstwo.end() ) {
-    if ( strategies[currentStrategy]->execute(*girlPlayer, **ittwo) ) {
-      SmartSprite* doatwo = *ittwo;
-      girlPlayer->detach(doatwo);
-      delete doatwo;
-      ittwo = dropstwo.erase(ittwo);
-    }
-    else ++ittwo;
-  }
-}
 
-void Engine::update(Uint32 ticks) {
-  for(size_t i = 0; i < horses.size(); ++i){
-     horses.at(i)->update(ticks);
-  }
-  for(size_t i = 0; i < cows.size(); ++i){
-     cows.at(i)->update(ticks);
+  set.update();
+
+  for(size_t i = 0; i < chickens.size(); ++i){
+     chickens.at(i)->update(ticks);
   }
   for(size_t i = 0; i < rabbits.size(); ++i){
      rabbits.at(i)->update(ticks);
   }
-  for(size_t i = 0; i < chickens.size(); ++i){
-     chickens.at(i)->update(ticks);
+  for(size_t i = 0; i < cows.size(); ++i){
+     cows.at(i)->update(ticks);
   }
-  set.update();
-
-  //collision detection
-  checkForCollisions();
-
-  girlPlayer->update(ticks);
-  for ( Drawable* dropone : dropsone ) {
-    dropone->update( ticks );
+  for(size_t i = 0; i < horses.size(); ++i){
+     horses.at(i)->update(ticks);
   }
-  for ( Drawable* droptwo : dropstwo ) {
-    droptwo->update( ticks );
+  for(size_t i = 0; i < sheeps.size(); ++i){
+     sheeps.at(i)->update(ticks);
   }
+  for(size_t i = 0; i < pigs.size(); ++i){
+     pigs.at(i)->update(ticks);
+  }
+  
   world.update();
   cloud.update();
   tower.update();
@@ -209,7 +216,7 @@ void Engine::play() {
     while ( SDL_PollEvent(&event) ) {
       keystate = SDL_GetKeyboardState(NULL);
       if (event.type ==  SDL_QUIT) { done = true; break; }
-      if(event.type == SDL_KEYDOWN) {
+      if(event.type == SDL_KEYDOWN && event.key.repeat == 0) {
         if (keystate[SDL_SCANCODE_ESCAPE] || keystate[SDL_SCANCODE_Q]) {
           done = true;
           break;
@@ -224,14 +231,15 @@ void Engine::play() {
         if ( keystate[SDL_SCANCODE_T] ) {
           switchSprite();
         }
-        if ( keystate[SDL_SCANCODE_E] ) {
-          girlPlayer->explode();
-        }
         if ( keystate[SDL_SCANCODE_F1] && !showHud) {
           showHud = true;
         }
         else if ( keystate[SDL_SCANCODE_F1] && showHud) {
           showHud = false;
+        }
+        //jump
+        if (keystate[SDL_SCANCODE_SPACE]) {
+          static_cast<Player*>(girlPlayer)->jump();
         }
         if (keystate[SDL_SCANCODE_F4] && !makeVideo) {
           std::cout << "Initiating frame capture" << std::endl;
@@ -248,18 +256,22 @@ void Engine::play() {
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
-      if (keystate[SDL_SCANCODE_A]) {
-        static_cast<Player*>(girlPlayer)->left();
-      }
-      if (keystate[SDL_SCANCODE_D]) {
-        static_cast<Player*>(girlPlayer)->right();
-      }
-      //jump 
-      if (keystate[SDL_SCANCODE_SPACE]) {
-        static_cast<Player*>(girlPlayer)->jump();
+      if( static_cast<Player*>(girlPlayer)->getJumpStatus() ){
+        //hit 
+        if (keystate[SDL_SCANCODE_H]) {
+          static_cast<Player*>(girlPlayer)->hit();
+        }
       }else{
-        static_cast<Player*>(girlPlayer)->down();
+        if (keystate[SDL_SCANCODE_A]) {
+          static_cast<Player*>(girlPlayer)->left();
+        }
+        if (keystate[SDL_SCANCODE_D]) {
+          static_cast<Player*>(girlPlayer)->right();
+        }
       }
+      
+      
+
       setFps(clock.getFps());
       draw();
       update(ticks);

@@ -46,6 +46,7 @@ void ExplodingSprite::makeChunks(unsigned int n) {
   // Break the SDL_Surface into n*n squares; where each square
   // has width and height of imageWidth/n and imageHeight/n
   // Note that "n" s/b a perfect square.
+  
   int chunk_width = std::max(1u, getImage()->getWidth()/n);
   int chunk_height = std::max(1u, getImage()->getHeight()/n);
   int speedx = static_cast<int>(getVelocityX()); // Wanna test for zero...
@@ -66,8 +67,8 @@ void ExplodingSprite::makeChunks(unsigned int n) {
       Image* image = 
         proto->crop({source_x,source_y,chunk_width,chunk_height});
       Chunk* chunk = new Chunk(
-                Vector2f(getX()+source_x,   // x coord of destination 
-                         getY()+source_y),  // y coord of destination
+                Vector2f(getX()+source_x+rand()%100,   // x coord of destination 
+                         getY()+source_y+rand()%100),  // y coord of destination
                 Vector2f(sx, sy),
                 getName()+"/chunk",
                 image);

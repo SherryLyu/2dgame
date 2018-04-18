@@ -28,23 +28,25 @@ public:
   virtual const SDL_Surface* getSurface() const { 
     return images[currentFrame]->getSurface();
   }
-
-  std::string getName()  const { 
-    return currentname; 
+  bool getJumpStatus()  const {
+    return jumpingStatus;
   }
-  
+
   void right();
   void left();
-  void up();
-  void down();
-  void stop();
   void jump();
-
+  void down();
+  void hit();
+  void stop();
+  void stand();
+  
   virtual void explode();
 
 private:
+  enum MODE {STAND, JUMP, DOWN, WALKRIGHT, WALKLEFT, HIT};
   std::vector<Image *> images;
   ExplodingSprite* explosion;
+  bool jumpingStatus;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
@@ -53,9 +55,10 @@ private:
   int worldWidth;
   int worldHeight;
   std::string currentname;
+  MODE lastMode;
+  MODE currentMode;
 
   Vector2f initialVelocity;
-
   void advanceFrame(Uint32 ticks);
   Player& operator=(const Player&);
 };

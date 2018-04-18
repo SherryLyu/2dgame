@@ -30,10 +30,12 @@ public:
   }
 
   virtual void explode();
+  virtual bool hasExploded() const { return explosionEnd; }
 
 protected:
   std::vector<Image *> images;
   ExplodingSprite* explosion;
+  bool explosionEnd;
 
   unsigned currentFrame;
   unsigned numberOfFrames;

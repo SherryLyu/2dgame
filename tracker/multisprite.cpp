@@ -22,6 +22,7 @@ MultiSprite::MultiSprite( const std::string& name) :
            ),
   images( RenderContext::getInstance()->getImages(name) ),
   explosion(nullptr),
+  explosionEnd(false),
   
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
@@ -35,6 +36,7 @@ MultiSprite::MultiSprite(const MultiSprite& s) :
   Drawable(s), 
   images(s.images),
   explosion(s.explosion),
+  explosionEnd(s.explosionEnd),
   currentFrame(s.currentFrame),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
@@ -47,6 +49,7 @@ MultiSprite& MultiSprite::operator=(const MultiSprite& s) {
   Drawable::operator=(s);
   images = (s.images);
   explosion = s.explosion;
+  explosionEnd = s.explosionEnd;
   currentFrame = (s.currentFrame);
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
@@ -69,12 +72,14 @@ void MultiSprite::draw() const {
   else images[currentFrame]->draw(getX(), getY(), getScale());
 }
 
-void MultiSprite::update(Uint32 ticks) { 
+void MultiSprite::update(Uint32 ticks) {
+  if ( explosionEnd ) return;
   if ( explosion ) {
     explosion->update(ticks);
     if ( explosion->chunkCount() == 0 ) {
       delete explosion;
       explosion = NULL;
+      explosionEnd = true;
     }
     return;
   }

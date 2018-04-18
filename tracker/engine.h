@@ -8,8 +8,10 @@
 #include "viewport.h"
 
 class CollisionStrategy;
-class SmartSprite;
+//class SmartSprite;
 class SubjectSprite;
+class MultiSprite;
+class Player;
 
 class Engine {
 public:
@@ -40,12 +42,17 @@ private:
   //polymorphic vector for coherent animation
   std::vector<Drawable*> horses;
   std::vector<Drawable*> cows;
+  std::vector<Drawable*> sheeps;
+  std::vector<Drawable*> pigs;
   std::vector<Drawable*> rabbits;
   std::vector<Drawable*> chickens;
+  //std::vector<Drawable*> birds;
+
   World set;
-  std::vector<SmartSprite*> dropsone;
-  std::vector<SmartSprite*> dropstwo;
-  SubjectSprite* girlPlayer;
+  std::vector<MultiSprite*> birds;
+  //std::vector<SmartSprite*> dropstwo;
+  //SubjectSprite* girlPlayer;
+  Player* girlPlayer;
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;
   int currentSprite;
@@ -58,5 +65,4 @@ private:
   void update(Uint32);
 
   void printScales() const;
-  void checkForCollisions();
 };

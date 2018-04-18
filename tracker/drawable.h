@@ -27,7 +27,8 @@ public:
   virtual int getScaledWidth() const = 0;
   virtual int getScaledHeight() const = 0;
   virtual const SDL_Surface* getSurface() const = 0;
-
+  //virtual bool hasExploded() const = 0;
+  
   const std::string& getName() const { return name; }
   void setName(const std::string& n) { name = n;    }
 
@@ -48,6 +49,7 @@ public:
   void  setVelocityX(float vx) { velocity[0] = vx;   }
   float getVelocityY() const   { return velocity[1]; }
   void  setVelocityY(float vy) { velocity[1] = vy;   }
+
 private:
   std::string name;
   Vector2f position;
