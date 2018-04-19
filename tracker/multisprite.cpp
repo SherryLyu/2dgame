@@ -4,20 +4,14 @@
 #include "explodingSprite.h"
 
 Vector2f MultiSprite::makeLocation(int sx, int sy) const {
-  float newsx = Gamedata::getInstance().getRandFloat(sx-5,sx+10);;
-  float newsy = Gamedata::getInstance().getRandFloat(sy,sy);;
-  newsx *= [](){ if(rand()%2) return -1; else return 1; }();
-  newsy *= [](){ if(rand()%2) return -1; else return 1; }();
-
-  return Vector2f(newsx, newsy);
+  int width = Gamedata::getInstance().getXmlInt("world/width");
+  float newsx = Gamedata::getInstance().getRandFloat(sx,width-sx);
+  return Vector2f(newsx, sy);
 }
 
 Vector2f MultiSprite::makeVelocity(int vx, int vy) const {
-  float newvx = Gamedata::getInstance().getRandFloat(vx-5,vx+10);;
-  float newvy = Gamedata::getInstance().getRandFloat(vy,vy);;
-  newvx *= [](){ if(rand()%2) return -1; else return 1; }();
-  newvy *= [](){ if(rand()%2) return -1; else return 1; }();
-
+  float newvx = Gamedata::getInstance().getRandFloat(vx-10,vx+10);
+  float newvy = Gamedata::getInstance().getRandFloat(vy,vy);
   return Vector2f(newvx, newvy);
 }
 
@@ -31,7 +25,7 @@ void MultiSprite::advanceFrame(Uint32 ticks) {
 
 MultiSprite::~MultiSprite( ) { if (explosion) delete explosion; }
 
-MultiSprite::MultiSprite( const std::string& name) :
+MultiSprite::MultiSprite( const std::string& name, const std::string& id ) :
   Drawable(name, 
            makeLocation(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
                     Gamedata::getInstance().getXmlInt(name+"/startLoc/y")), 
@@ -39,14 +33,13 @@ MultiSprite::MultiSprite( const std::string& name) :
                     Gamedata::getInstance().getXmlInt(name+"/speedY"))
            ),
   images( RenderContext::getInstance()->getImages(name) ),
-  initialImages( RenderContext::getInstance()->getImages(name) ),
   explosion(nullptr),
   explosionEnd(false),
   initialName(name),
-  currentname(getName()),
   initialVelocity(getVelocity()),
   initialPosition(getPosition()),
-  catchStatus(false),
+  catchedId(""),
+  identity(id),
 
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
@@ -59,14 +52,13 @@ MultiSprite::MultiSprite( const std::string& name) :
 MultiSprite::MultiSprite(const MultiSprite& s) :
   Drawable(s), 
   images( s.images ),
-  initialImages ( s.initialImages ),
   explosion( s.explosion ),
   explosionEnd( s.explosionEnd ),
   initialName( s.initialName ),
-  currentname( s.currentname ),
   initialVelocity( s.initialVelocity ),
   initialPosition( s.initialPosition ),
-  catchStatus( s.catchStatus ),
+  catchedId( s.catchedId ),
+  identity( s.identity ),
   currentFrame( s.currentFrame ),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
@@ -78,14 +70,13 @@ MultiSprite::MultiSprite(const MultiSprite& s) :
 MultiSprite& MultiSprite::operator=(const MultiSprite& s) {
   Drawable::operator=(s);
   images = ( s.images );
-  initialImages = ( s.initialImages );
   explosion = ( s.explosion );
   explosionEnd = ( s.explosionEnd );
   initialName = ( s.initialName );
-  currentFrame = (s.currentFrame);
   initialVelocity = ( s.initialVelocity );
   initialPosition = ( s.initialPosition );
-  catchStatus = ( s.catchStatus );
+  catchedId = ( s.catchedId );
+  identity = ( s.identity );
   currentFrame = ( s.currentFrame );
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
@@ -103,20 +94,25 @@ void MultiSprite::explode() {
   }
 }
 
-void MultiSprite::catchAnimal(const std::string n) {
-  if (currentname.find("Reverse") != std::string::npos) {
-    currentname = n + "CatchedReverse";
+void MultiSprite::catchAnimal(const std::string& n, const std::string& id) {
+  if (n.find("Reverse") != std::string::npos) {
+    setName(n.substr(0, n.find("Reverse")) + "CatchedReverse");
   }else{
-    currentname = n + "Catched";
+    setName(n + "Catched");
   }
-  images = (ImageFactory::getInstance().getImages (currentname));
-  setVelocityY(-fabs( getVelocityY()));
-  catchStatus = true;
+  images = (ImageFactory::getInstance().getImages (getName()));
+  if(n == "Chicken" || n == "ChickenReverse"){
+    setVelocityY(-fabs( getVelocityY()*1.05));
+  }else{
+    setVelocityY(-fabs( getVelocityY()));
+  }
+  catchedId = id;
 }
 
 void MultiSprite::releaseAnimal() {
-  images = initialImages;
-  catchStatus = false;
+  setName(initialName);
+  images = (ImageFactory::getInstance().getImages (getName()));
+  catchedId = "";
 }
 
 void MultiSprite::draw() const { 
@@ -142,20 +138,20 @@ void MultiSprite::update(Uint32 ticks) {
   setPosition(getPosition() + incr);
 
   if ( getY() < -174) {
-    currentname = initialName;
-    images = (ImageFactory::getInstance().getImages (currentname));
+    setName(initialName);
+    images = (ImageFactory::getInstance().getImages (getName()));
     setVelocity(initialVelocity);
     setPosition(initialPosition);
   }
-  if ( getY() > 300) {
+  if ( getY() > 350) {
     setVelocityY( -fabs( getVelocityY() ) );
   }
 
-  /*if ( getX() < 0) {
+  if ( getX() < 0) {
     setVelocityX( fabs( getVelocityX() ) );
   }
   if ( getX() > worldWidth-getScaledWidth()) {
     setVelocityX( -fabs( getVelocityX() ) );
-  } */ 
+  }  
 
 }

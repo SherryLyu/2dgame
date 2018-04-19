@@ -58,7 +58,6 @@ private:
   float timeSinceLastFrame;
   int worldWidth;
   int worldHeight;
-  std::string currentname;
   MODE lastMode;
   MODE currentMode;
 

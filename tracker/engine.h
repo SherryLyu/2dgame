@@ -44,14 +44,13 @@ private:
   std::vector<Drawable*> cows;
   std::vector<Drawable*> sheeps;
   std::vector<Drawable*> pigs;
-  std::vector<Drawable*> rabbits;
   std::vector<Drawable*> chickens;
   //std::vector<Drawable*> birds;
 
-  World set;
   std::vector<MultiSprite*> birds;
   //std::vector<SmartSprite*> dropstwo;
   //SubjectSprite* girlPlayer;
+  World set;
   Player* girlPlayer;
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;

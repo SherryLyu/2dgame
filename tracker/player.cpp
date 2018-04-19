@@ -31,7 +31,6 @@ Player::Player( const std::string& name) :
   timeSinceLastFrame( 0 ),
   worldWidth(Gamedata::getInstance().getXmlInt("world/width")),
   worldHeight(Gamedata::getInstance().getXmlInt("world/height")),
-  currentname(name),
   lastMode(STAND),
   currentMode(STAND),
   initialVelocity(getVelocity())
@@ -49,7 +48,6 @@ Player::Player(const Player& s) :
   timeSinceLastFrame( s.timeSinceLastFrame ),
   worldWidth( s.worldWidth ),
   worldHeight( s.worldHeight ),
-  currentname(s.getName()),
   lastMode(s.lastMode),
   currentMode(s.currentMode),
   initialVelocity( s.initialVelocity )
@@ -67,7 +65,6 @@ Player& Player::operator=(const Player& s) {
   timeSinceLastFrame = ( s.timeSinceLastFrame );
   worldWidth = ( s.worldWidth );
   worldHeight = ( s.worldHeight );
-  currentname = ( s.getName() );
   lastMode = (s.lastMode);
   currentMode = ( s.currentMode );
   initialVelocity = ( s.initialVelocity );
@@ -91,8 +88,8 @@ void Player::right() {
   if ( getX() < worldWidth-getScaledWidth()) {
     //std::cout << "Here comes turing right (1): " << currentMode << ". With image: " << getName() << std::endl;
     //reverse the direction of sprite
-    currentname = "Girl";
-    images = (ImageFactory::getInstance().getImages (currentname));
+    setName("Girl");
+    images = (ImageFactory::getInstance().getImages (getName()));
     setVelocityX(initialVelocity[0]);
     lastMode = currentMode;
     currentMode = WALKRIGHT;
@@ -103,8 +100,8 @@ void Player::right() {
 void Player::left()  { 
   if ( getX() > 0) {
     //reverse the direction of sprite
-    currentname = "GirlReverse";
-    images = (ImageFactory::getInstance().getImages (currentname));
+    setName("GirlReverse");
+    images = (ImageFactory::getInstance().getImages (getName()));
     setVelocityX(-initialVelocity[0]);
     lastMode = currentMode;
     currentMode = WALKLEFT;
@@ -112,24 +109,24 @@ void Player::left()  {
 } 
 
 void Player::stand()  {
-  if (currentname.find("Reverse") != std::string::npos) {
-    currentname = "GirlStandReverse";
+  if (getName().find("Reverse") != std::string::npos) {
+    setName("GirlStandReverse");
   }else{
-    currentname = "GirlStand";
+    setName("GirlStand");
   }
-  images = (ImageFactory::getInstance().getImages (currentname));
+  images = (ImageFactory::getInstance().getImages (getName()));
   lastMode = currentMode;
   currentMode = STAND;
 }
 
 void Player::down()  {
   if ( getY() < 304) {//check if in jump condition
-    if (currentname.find("Reverse") != std::string::npos) {
-      currentname = "GirlDownReverse";
+    if (getName().find("Reverse") != std::string::npos) {
+      setName("GirlDownReverse");
     }else{
-      currentname = "GirlDown";
+      setName("GirlDown");
     }
-    images = (ImageFactory::getInstance().getImages (currentname));
+    images = (ImageFactory::getInstance().getImages (getName()));
     setVelocityY( initialVelocity[1] );
     lastMode = currentMode;
     currentMode = DOWN;
@@ -140,12 +137,12 @@ void Player::jump(){
   
   if ( getY() > 0) {
     if( getY() > 215){
-      if (currentname.find("Reverse") != std::string::npos) {
-        currentname = "GirlUpReverse";
+      if (getName().find("Reverse") != std::string::npos) {
+        setName("GirlUpReverse");
       }else{
-        currentname = "GirlUp";
+        setName("GirlUp");
       }
-      images = (ImageFactory::getInstance().getImages (currentname));
+      images = (ImageFactory::getInstance().getImages (getName()));
       setVelocityY( -initialVelocity[1] );
       lastMode = currentMode;
       currentMode = JUMP;
@@ -155,12 +152,12 @@ void Player::jump(){
 }
 
 void Player::hit() { 
-  if (currentname.find("Reverse") != std::string::npos) {
-    currentname = "GirlHitReverse";
+  if (getName().find("Reverse") != std::string::npos) {
+    setName("GirlHitReverse");
   }else{
-    currentname = "GirlHit";
+    setName("GirlHit");
   }
-  images = (ImageFactory::getInstance().getImages (currentname));
+  images = (ImageFactory::getInstance().getImages (getName()));
   lastMode = currentMode;
   currentMode = HIT;
   hitStatus = true;

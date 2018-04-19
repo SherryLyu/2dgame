@@ -19,7 +19,7 @@ void TwowaymultiSprite::advanceFrame(Uint32 ticks) {
 	}
 }
 
-TwowaymultiSprite::TwowaymultiSprite( const std::string& name) :
+TwowaymultiSprite::TwowaymultiSprite( const std::string& name, const std::string& id ) :
   Drawable(name, 
            Vector2f(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
                     Gamedata::getInstance().getXmlInt(name+"/startLoc/y")), 
@@ -27,32 +27,36 @@ TwowaymultiSprite::TwowaymultiSprite( const std::string& name) :
                     Gamedata::getInstance().getXmlInt(name+"/speedY"))
            ),
   images( RenderContext::getInstance()->getImages(name) ),
+  catcherId(""),
+  identity(id),
 
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
   frameInterval( Gamedata::getInstance().getXmlInt(name+"/frameInterval")),
   timeSinceLastFrame( 0 ),
   worldWidth(Gamedata::getInstance().getXmlInt("world/width")),
-  worldHeight(Gamedata::getInstance().getXmlInt("world/height")),
-  currentname(name)
+  worldHeight(Gamedata::getInstance().getXmlInt("world/height"))
 { }
 
 TwowaymultiSprite::TwowaymultiSprite(const TwowaymultiSprite& s) :
   Drawable(s), 
-  images(s.images),
-  currentFrame(s.currentFrame),
+  images( s.images ),
+  catcherId( s.catcherId ),
+  identity( s.identity ),
+  currentFrame( s.currentFrame ),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
   timeSinceLastFrame( s.timeSinceLastFrame ),
   worldWidth( s.worldWidth ),
-  worldHeight( s.worldHeight ),
-  currentname(s.getName())
+  worldHeight( s.worldHeight )
   { }
 
 TwowaymultiSprite& TwowaymultiSprite::operator=(const TwowaymultiSprite& s) {
   Drawable::operator=(s);
-  images = (s.images);
-  currentFrame = (s.currentFrame);
+  images = ( s.images );
+  catcherId = ( s.catcherId );
+  identity = ( s.identity );
+  currentFrame = ( s.currentFrame );
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
   timeSinceLastFrame = ( s.timeSinceLastFrame );
@@ -80,13 +84,18 @@ void TwowaymultiSprite::update(Uint32 ticks) {
 
   if ( getX() < 0) {
     //when hit the left edge of world, reverse the direction of sprite
-    std::string temp = currentname.substr(0, currentname.find("Reverse"));
-    images = (RenderContext::getInstance()->getImages(temp));
+    if (getName().find("Reverse") != std::string::npos) {
+      setName(getName().substr(0, getName().find("Reverse")));
+    }
+    images = (RenderContext::getInstance()->getImages(getName()));
     setVelocityX( fabs( getVelocityX() ) );
   }
   if ( getX() > worldWidth-getScaledWidth()) {
     //when hit the right edge of world, reverse the direction of sprite
-    images = (RenderContext::getInstance()->getImages (currentname +"Reverse"));
+    if (getName().find("Reverse") == std::string::npos) {
+      setName(getName() + "Reverse");
+    }
+    images = (RenderContext::getInstance()->getImages (getName()));
     setVelocityX( -fabs( getVelocityX() ) );
   } 
 

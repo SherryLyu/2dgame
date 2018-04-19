@@ -7,7 +7,7 @@
 
 class TwowaymultiSprite : public Drawable {
 public:
-  TwowaymultiSprite(const std::string&);
+  TwowaymultiSprite(const std::string&, const std::string&);
   TwowaymultiSprite(const TwowaymultiSprite&);
 
   virtual void draw() const;
@@ -25,11 +25,24 @@ public:
   virtual const SDL_Surface* getSurface() const { 
     return images[currentFrame]->getSurface();
   }
-  std::string getName()  const { 
-    return currentname; 
+
+  std::string getIdentity()  const {
+    return identity;
   }
+  void setIdentity(const std::string& id) { 
+    identity = id;    
+  }
+  std::string getCatcherId()  const {
+    return catcherId;
+  }
+  void setCatcherId(const std::string& id) { 
+    catcherId = id;    
+  }
+
 protected:
   std::vector<Image *> images;
+  std::string catcherId;
+  std::string identity;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
@@ -37,7 +50,6 @@ protected:
   float timeSinceLastFrame;
   int worldWidth;
   int worldHeight;
-  std::string currentname;
 
   Vector2f makeVelocity(int, int) const;
   void advanceFrame(Uint32 ticks);

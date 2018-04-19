@@ -24,9 +24,6 @@ Engine::~Engine() {
   for( Drawable* chicken : chickens){
     delete chicken;
   }
-  for( Drawable* rabbit : rabbits){
-    delete rabbit;
-  }
   for( Drawable* pig : pigs){
     delete pig;
   }
@@ -59,16 +56,13 @@ Engine::Engine() :
   ground("ground", Gamedata::getInstance().getXmlInt("ground/factor") ),
   hud(),
   viewport( Viewport::getInstance() ),
-  //use initialization list 
-  horses({new TwowaymultiSprite("Horse"), new TwowaymultiSprite("Horse")}),
-  cows({new TwowaymultiSprite("Cow"), new TwowaymultiSprite("Cow")}),
-  sheeps({new TwowaymultiSprite("Sheep"), new TwowaymultiSprite("Sheep")}),
-  pigs({new TwowaymultiSprite("Pig"), new TwowaymultiSprite("Pig")}),
-  rabbits({new TwowaymultiSprite("Rabbit"), new TwowaymultiSprite("Rabbit")}),
-  chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
-  //birds({new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird")}),
-  set("set", Gamedata::getInstance().getXmlInt("set/factor")),
+  horses(),
+  cows(),
+  sheeps(),
+  pigs(),
+  chickens(),
   birds(),  
+  set("set", Gamedata::getInstance().getXmlInt("set/factor")),
   girlPlayer(new Player("Girl")),
   strategies(),
   currentStrategy(0),
@@ -77,8 +71,20 @@ Engine::Engine() :
   makeVideo( false ),
   showHud( false )
 {
-  int n = Gamedata::getInstance().getXmlInt("numberOfBirds");
-  birds.reserve(n);
+  int nofhorses = Gamedata::getInstance().getXmlInt("numberOfHorses");
+  int nofcows = Gamedata::getInstance().getXmlInt("numberOfCows");
+  int nofsheeps = Gamedata::getInstance().getXmlInt("numberOfSheeps");
+  int nofpigs = Gamedata::getInstance().getXmlInt("numberOfPigs");
+  int nofchickens = Gamedata::getInstance().getXmlInt("numberOfChickens");
+  int nofbirds = Gamedata::getInstance().getXmlInt("numberOfBirds");
+  
+  horses.reserve(nofhorses);
+  cows.reserve(nofcows);
+  sheeps.reserve(nofsheeps);
+  pigs.reserve(nofpigs);
+  chickens.reserve(nofchickens);
+  birds.reserve(nofbirds);
+  
   /*Vector2f pos = girlPlayer->getPosition();
   int w = girlPlayer->getScaledWidth();
   int h = girlPlayer->getScaledHeight();
@@ -86,8 +92,23 @@ Engine::Engine() :
     birds.push_back( new SmartSprite("Bird", pos, w, h) );
     girlPlayer->attach( birds[i] );;
   }*/
-  for (int i = 0; i < n; ++i) {
-    birds.push_back( new MultiSprite("Bird") );
+  for (int i = 0; i < nofhorses; ++i) {
+    horses.push_back( new TwowaymultiSprite("Horse", "Horse"+std::to_string(i)) );
+  }
+  for (int i = 0; i < nofcows; ++i) {
+    cows.push_back( new TwowaymultiSprite("Cow", "Cow"+std::to_string(i)) );
+  }
+  for (int i = 0; i < nofsheeps; ++i) {
+    sheeps.push_back( new TwowaymultiSprite("Sheep", "Sheep"+std::to_string(i)) );
+  }
+  for (int i = 0; i < nofpigs; ++i) {
+    pigs.push_back( new TwowaymultiSprite("Pig", "Pig"+std::to_string(i)) );
+  }
+  for (int i = 0; i < nofchickens; ++i) {
+    chickens.push_back( new TwowaymultiSprite("Chicken", "Chicken"+std::to_string(i)) );
+  }
+  for (int i = 0; i < nofbirds; ++i) {
+    birds.push_back( new MultiSprite("Bird", "Bird"+std::to_string(i)) );
   }
   strategies.push_back( new PerPixelCollisionStrategy );
   strategies.push_back( new RectangularCollisionStrategy );
@@ -109,6 +130,91 @@ void Engine::draw() const {
     hud.draw(renderer);
     strategies[currentStrategy]->draw();
   }
+
+  auto it = birds.begin();
+  while ( it != birds.end() ) {
+    auto itforhorses = horses.begin();
+    while ( itforhorses != horses.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforhorses) 
+        && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+        std::string animalName = (*itforhorses)->getName();
+        std::string animalId = static_cast<TwowaymultiSprite*>(*itforhorses)->getIdentity();
+        static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
+        
+        std::string catcherid = static_cast<MultiSprite*>(*it)->getIdentity();
+        static_cast<TwowaymultiSprite*>(*itforhorses)->setCatcherId(catcherid);
+      }
+      ++itforhorses;
+    }
+    auto itforcows = cows.begin();
+    while ( itforcows != cows.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforcows) 
+        && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+        std::string animalName = (*itforcows)->getName();
+        std::string animalId = static_cast<TwowaymultiSprite*>(*itforcows)->getIdentity();
+        static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
+
+        std::string catcherid = static_cast<MultiSprite*>(*it)->getIdentity();
+        static_cast<TwowaymultiSprite*>(*itforcows)->setCatcherId(catcherid);
+      }
+      ++itforcows;
+    }
+    auto itforsheeps = sheeps.begin();
+    while ( itforsheeps != sheeps.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforsheeps) 
+        && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+        std::string animalName = (*itforsheeps)->getName();
+        std::string animalId = static_cast<TwowaymultiSprite*>(*itforsheeps)->getIdentity();
+        static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
+
+        std::string catcherid = static_cast<MultiSprite*>(*it)->getIdentity();
+        static_cast<TwowaymultiSprite*>(*itforsheeps)->setCatcherId(catcherid);
+      }
+      ++itforsheeps;
+    }
+    auto itforpigs = pigs.begin();
+    while ( itforpigs != pigs.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforpigs) 
+        && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+        std::string animalName = (*itforpigs)->getName();
+        std::string animalId = static_cast<TwowaymultiSprite*>(*itforpigs)->getIdentity();
+        static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
+
+        std::string catcherid = static_cast<MultiSprite*>(*it)->getIdentity();
+        static_cast<TwowaymultiSprite*>(*itforpigs)->setCatcherId(catcherid);
+      }
+      ++itforpigs;
+    }
+    auto itforchickens = chickens.begin();
+    while ( itforchickens != chickens.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforchickens) 
+        && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+        std::string animalName = (*itforchickens)->getName();
+        std::string animalId = static_cast<TwowaymultiSprite*>(*itforchickens)->getIdentity();
+        static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
+
+        std::string catcherid = static_cast<MultiSprite*>(*it)->getIdentity();
+        static_cast<TwowaymultiSprite*>(*itforchickens)->setCatcherId(catcherid);
+      }
+      ++itforchickens;
+    }
+    //collision detection
+    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) { 
+      if ( static_cast<Player*>(girlPlayer)->getHitStatus() ) {
+        if( static_cast<MultiSprite*>(*it)->getCatchedId() != "" ){
+          static_cast<MultiSprite*>(*it)->releaseAnimal();
+          //move bird to the top, add check catched to animal(in order to return), 
+          //add hud (animal left, bird left)
+          //girl lose(fall)
+          //the speed and position of birds
+        }
+        (*it)->explode();
+      }
+    }
+    (*it)->draw();
+    ++it;
+  }
+  
   for ( const Drawable* pig : pigs ) {
      pig->draw();
   }
@@ -121,52 +227,21 @@ void Engine::draw() const {
   for ( const Drawable* cow : cows ) {
      cow->draw();
   }
-  for ( const Drawable* rabbit : rabbits ) {
-     rabbit->draw();
-  }
   for ( const Drawable* chicken : chickens ) {
      chicken->draw();
   }
 
   set.draw();
-
-  auto it = birds.begin();
-  while ( it != birds.end() ) {
-    auto itforhorse = horses.begin();
-    while ( itforhorse != horses.end() ){
-      if ( strategies[currentStrategy]->execute(**it, **itforhorse) ) { 
-        std::string testname = "Horse";
-        static_cast<MultiSprite*>(*it)->catchAnimal(testname);
-      }
-      ++itforhorse;
-    }
-    //collision detection
-    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) { 
-      if ( static_cast<Player*>(girlPlayer)->getHitStatus() ) {
-        if( static_cast<MultiSprite*>(*it)->getCatchStatus() ){
-          static_cast<MultiSprite*>(*it)->releaseAnimal();
-          //move bird to the top, add check catched to animal(in order to return), 
-          //add all animal to one list (maybe) 
-          //add hud (animal left, bird left)
-          //girl lose(fall)
-          //the speed and position of birds
-        }
-        (*it)->explode();
-      }
-    }
-    (*it)->draw();
-    ++it;
-  }
-  
   girlPlayer->draw();
 
   viewport.draw();
   SDL_RenderPresent(renderer);
 }
 
+
 void Engine::update(Uint32 ticks) {
   girlPlayer->update(ticks);
-
+  set.update();
   auto it = birds.begin();
   while ( it != birds.end() ) {
     (*it)->update( ticks );
@@ -177,13 +252,9 @@ void Engine::update(Uint32 ticks) {
     else ++it;
   }
 
-  set.update();
 
   for(size_t i = 0; i < chickens.size(); ++i){
      chickens.at(i)->update(ticks);
-  }
-  for(size_t i = 0; i < rabbits.size(); ++i){
-     rabbits.at(i)->update(ticks);
   }
   for(size_t i = 0; i < cows.size(); ++i){
      cows.at(i)->update(ticks);

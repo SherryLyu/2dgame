@@ -21,8 +21,6 @@ OBJS = \
 	sprite.o \
 	multisprite.o \
 	twowaymultisprite.o \
-	smartSprite.o \
-	subjectSprite.o \
 	collisionStrategy.o \
 	player.o \
 	hud.o \

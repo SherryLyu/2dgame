@@ -9,7 +9,7 @@ class ExplodingSprite;
 
 class MultiSprite : public Drawable {
 public:
-  MultiSprite(const std::string&);
+  MultiSprite(const std::string&, const std::string&);
   MultiSprite(const MultiSprite&);
   ~MultiSprite();
 
@@ -32,23 +32,32 @@ public:
   virtual void explode();
   virtual bool hasExploded() const { return explosionEnd; }
 
-  void catchAnimal(const std::string);
+  void catchAnimal(const std::string&, const std::string&);
   void releaseAnimal();
 
-  bool getCatchStatus()  const {
-    return catchStatus;
+
+  std::string getIdentity()  const {
+    return identity;
+  }
+  void setIdentity(const std::string& id) { 
+    identity = id;    
+  }
+  std::string getCatchedId()  const {
+    return catchedId;
+  }
+  void setCatchedId(const std::string& id) { 
+    catchedId = id;    
   }
 
 protected:
   std::vector<Image *> images;
-  std::vector<Image *> initialImages;
   ExplodingSprite* explosion;
   bool explosionEnd;
   std::string initialName;
-  std::string currentname;
   Vector2f initialVelocity;
   Vector2f initialPosition;
-  bool catchStatus;
+  std::string catchedId;
+  std::string identity;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
