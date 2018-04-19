@@ -4,7 +4,7 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfBirds>1</numberOfBirds>
+<numberOfBirds>2</numberOfBirds>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -206,6 +206,20 @@
   <speedY>0</speedY>
   <transparency>false</transparency>
 </HorseReverse>
+
+<HorseCatched>
+  <file>assets/horsecatched.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <transparency>false</transparency>
+</HorseCatched>
+
+<HorseCatchedReverse>
+  <file>assets/horsecatchedreverse.png</file>
+  <frames>4</frames>
+  <frameInterval>200</frameInterval>
+  <transparency>false</transparency>
+</HorseCatchedReverse>
 
 <Cow>
   <file>assets/cow.png</file>

@@ -32,10 +32,23 @@ public:
   virtual void explode();
   virtual bool hasExploded() const { return explosionEnd; }
 
+  void catchAnimal(const std::string);
+  void releaseAnimal();
+
+  bool getCatchStatus()  const {
+    return catchStatus;
+  }
+
 protected:
   std::vector<Image *> images;
+  std::vector<Image *> initialImages;
   ExplodingSprite* explosion;
   bool explosionEnd;
+  std::string initialName;
+  std::string currentname;
+  Vector2f initialVelocity;
+  Vector2f initialPosition;
+  bool catchStatus;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
@@ -44,6 +57,8 @@ protected:
   int worldWidth;
   int worldHeight;
 
+  Vector2f makeLocation(int, int) const;
+  Vector2f makeVelocity(int, int) const;
   void advanceFrame(Uint32 ticks);
   MultiSprite& operator=(const MultiSprite&);
 };

@@ -132,9 +132,25 @@ void Engine::draw() const {
 
   auto it = birds.begin();
   while ( it != birds.end() ) {
+    auto itforhorse = horses.begin();
+    while ( itforhorse != horses.end() ){
+      if ( strategies[currentStrategy]->execute(**it, **itforhorse) ) { 
+        std::string testname = "Horse";
+        static_cast<MultiSprite*>(*it)->catchAnimal(testname);
+      }
+      ++itforhorse;
+    }
     //collision detection
     if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) { 
       if ( static_cast<Player*>(girlPlayer)->getHitStatus() ) {
+        if( static_cast<MultiSprite*>(*it)->getCatchStatus() ){
+          static_cast<MultiSprite*>(*it)->releaseAnimal();
+          //move bird to the top, add check catched to animal(in order to return), 
+          //add all animal to one list (maybe) 
+          //add hud (animal left, bird left)
+          //girl lose(fall)
+          //the speed and position of birds
+        }
         (*it)->explode();
       }
     }
