@@ -23,6 +23,7 @@ Player::Player( const std::string& name) :
   images( ImageFactory::getInstance().getImages(name) ),
   explosion(nullptr),
   jumpingStatus(false),
+  hitStatus(false),
 
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
@@ -41,6 +42,7 @@ Player::Player(const Player& s) :
   images(s.images),
   explosion(s.explosion),
   jumpingStatus(s.getJumpStatus()),
+  hitStatus(s.getHitStatus()),
   currentFrame(s.currentFrame),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
@@ -55,10 +57,11 @@ Player::Player(const Player& s) :
 
 Player& Player::operator=(const Player& s) {
   Drawable::operator=(s);
-  images = (s.images);
-  explosion = s.explosion;
-  jumpingStatus = s.getJumpStatus();
-  currentFrame = (s.currentFrame);
+  images = ( s.images );
+  explosion = ( s.explosion );
+  jumpingStatus = ( s.getJumpStatus() );
+  hitStatus = ( s.getHitStatus() );
+  currentFrame = ( s.currentFrame );
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
   timeSinceLastFrame = ( s.timeSinceLastFrame );
@@ -120,7 +123,7 @@ void Player::stand()  {
 }
 
 void Player::down()  {
-  if ( getY() < 345) {//check if in jump condition
+  if ( getY() < 304) {//check if in jump condition
     if (currentname.find("Reverse") != std::string::npos) {
       currentname = "GirlDownReverse";
     }else{
@@ -136,7 +139,7 @@ void Player::down()  {
 void Player::jump(){
   
   if ( getY() > 0) {
-    if( getY() > 250){
+    if( getY() > 215){
       if (currentname.find("Reverse") != std::string::npos) {
         currentname = "GirlUpReverse";
       }else{
@@ -160,6 +163,7 @@ void Player::hit() {
   images = (ImageFactory::getInstance().getImages (currentname));
   lastMode = currentMode;
   currentMode = HIT;
+  hitStatus = true;
 }
 
 void Player::stop() { 
@@ -178,6 +182,7 @@ void Player::update(Uint32 ticks) {
   
   if(currentMode == HIT){
     currentMode = lastMode;
+    hitStatus = false;
   }
 
   if(currentMode == STAND){
@@ -201,10 +206,11 @@ void Player::update(Uint32 ticks) {
   }
   if(currentMode == DOWN){
     down();
-    if(currentFrame == 4){
+    if(currentFrame == 7){
       currentMode = STAND;
       currentFrame = 0;
       jumpingStatus = false;
+      setPosition(Vector2f(getPosition()[0], 304));
     }
   }
   advanceFrame(ticks);

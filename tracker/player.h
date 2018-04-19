@@ -31,6 +31,9 @@ public:
   bool getJumpStatus()  const {
     return jumpingStatus;
   }
+  bool getHitStatus()  const {
+    return hitStatus;
+  }
 
   void right();
   void left();
@@ -47,6 +50,7 @@ private:
   std::vector<Image *> images;
   ExplodingSprite* explosion;
   bool jumpingStatus;
+  bool hitStatus;
 
   unsigned currentFrame;
   unsigned numberOfFrames;

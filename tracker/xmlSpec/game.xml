@@ -74,7 +74,7 @@
 
 <Girl>
   <file>assets/girl.png</file>
-  <startLoc x="0" y="345"/>
+  <startLoc x="0" y="304"/>
   <frames>8</frames>
   <frameInterval>180</frameInterval>
   <speedX>200</speedX>
@@ -291,7 +291,7 @@
   <speedX>25</speedX>
   <speedY>50</speedY>
   <chunk>
-    <size>50</size>
+    <size>40</size>
     <distance>200</distance>
   </chunk>
   <safeDistance>150</safeDistance>

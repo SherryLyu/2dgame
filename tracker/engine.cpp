@@ -68,8 +68,7 @@ Engine::Engine() :
   chickens({new TwowaymultiSprite("Chicken"), new TwowaymultiSprite("Chicken")}),
   //birds({new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird"), new TwowaymultiSprite("Bird")}),
   set("set", Gamedata::getInstance().getXmlInt("set/factor")),
-  birds(),
- // dropstwo(),
+  birds(),  
   girlPlayer(new Player("Girl")),
   strategies(),
   currentStrategy(0),
@@ -134,8 +133,10 @@ void Engine::draw() const {
   auto it = birds.begin();
   while ( it != birds.end() ) {
     //collision detection
-    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) {
-      (*it)->explode();
+    if ( strategies[currentStrategy]->execute(*girlPlayer, **it) ) { 
+      if ( static_cast<Player*>(girlPlayer)->getHitStatus() ) {
+        (*it)->explode();
+      }
     }
     (*it)->draw();
     ++it;
@@ -256,12 +257,7 @@ void Engine::play() {
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
-      if( static_cast<Player*>(girlPlayer)->getJumpStatus() ){
-        //hit 
-        if (keystate[SDL_SCANCODE_H]) {
-          static_cast<Player*>(girlPlayer)->hit();
-        }
-      }else{
+      if( !static_cast<Player*>(girlPlayer)->getJumpStatus() ){
         if (keystate[SDL_SCANCODE_A]) {
           static_cast<Player*>(girlPlayer)->left();
         }
@@ -269,9 +265,11 @@ void Engine::play() {
           static_cast<Player*>(girlPlayer)->right();
         }
       }
-      
-      
-
+      //hit 
+      if (keystate[SDL_SCANCODE_H]) {
+        static_cast<Player*>(girlPlayer)->hit();
+      }
+ 
       setFps(clock.getFps());
       draw();
       update(ticks);
