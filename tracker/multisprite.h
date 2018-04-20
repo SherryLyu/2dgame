@@ -33,19 +33,18 @@ public:
   virtual bool hasExploded() const { return explosionEnd; }
 
   void catchAnimal(const std::string&, const std::string&);
-  void releaseAnimal();
+  void releaseAnimal(int);
 
-
-  std::string getIdentity()  const {
+  std::string getIdentity() const {
     return identity;
   }
-  void setIdentity(const std::string& id) { 
+  void setIdentity(const std::string id) { 
     identity = id;    
   }
-  std::string getCatchedId()  const {
+  std::string getCatchedId() const {
     return catchedId;
   }
-  void setCatchedId(const std::string& id) { 
+  void setCatchedId(const std::string id) { 
     catchedId = id;    
   }
 

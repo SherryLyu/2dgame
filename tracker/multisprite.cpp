@@ -5,7 +5,7 @@
 
 Vector2f MultiSprite::makeLocation(int sx, int sy) const {
   int width = Gamedata::getInstance().getXmlInt("world/width");
-  float newsx = Gamedata::getInstance().getRandFloat(sx,width-sx);
+  float newsx = Gamedata::getInstance().getRandFloat(sx,rand()%width-sx);
   return Vector2f(newsx, sy);
 }
 
@@ -86,6 +86,7 @@ MultiSprite& MultiSprite::operator=(const MultiSprite& s) {
   return *this;
 }
 
+//change to explosion image 
 void MultiSprite::explode() {
   if ( !explosion ) {
     Sprite 
@@ -94,6 +95,7 @@ void MultiSprite::explode() {
   }
 }
 
+//change to catch animal image
 void MultiSprite::catchAnimal(const std::string& n, const std::string& id) {
   if (n.find("Reverse") != std::string::npos) {
     setName(n.substr(0, n.find("Reverse")) + "CatchedReverse");
@@ -104,15 +106,17 @@ void MultiSprite::catchAnimal(const std::string& n, const std::string& id) {
   if(n == "Chicken" || n == "ChickenReverse"){
     setVelocityY(-fabs( getVelocityY()*1.05));
   }else{
-    setVelocityY(-fabs( getVelocityY()));
+    setVelocityY(-fabs( getVelocityY()*0.8));
   }
   catchedId = id;
 }
 
-void MultiSprite::releaseAnimal() {
-  setName(initialName);
-  images = (ImageFactory::getInstance().getImages (getName()));
-  catchedId = "";
+//change to original image (without catching)
+void MultiSprite::releaseAnimal(int check) {
+  if(check == 0){
+    setName(initialName);
+    images = (ImageFactory::getInstance().getImages (getName()));
+  }else catchedId = "";
 }
 
 void MultiSprite::draw() const { 
@@ -140,10 +144,11 @@ void MultiSprite::update(Uint32 ticks) {
   if ( getY() < -174) {
     setName(initialName);
     images = (ImageFactory::getInstance().getImages (getName()));
+    catchedId = "";
     setVelocity(initialVelocity);
     setPosition(initialPosition);
   }
-  if ( getY() > 350) {
+  if ( getY() > 345) {
     setVelocityY( -fabs( getVelocityY() ) );
   }
 

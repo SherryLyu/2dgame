@@ -3,7 +3,10 @@
 
 class Hud {
 public:
-	void draw(SDL_Renderer*) const;
+	void help(SDL_Renderer*) const;
+	void losing(SDL_Renderer*) const;
+	void winning(SDL_Renderer*) const;
+	void count(int, int) const;
 };
 
 

@@ -1,4 +1,5 @@
 #include <vector>
+#include <list>
 #include <SDL.h>
 #include "ioMod.h"
 #include "renderContext.h"
@@ -17,7 +18,7 @@ class Engine {
 public:
   Engine ();
   ~Engine ();
-  void play();
+  bool play();
   void switchSprite();
   void setFps(const int fps);
   //explicitly disallow compiler generated functions
@@ -45,13 +46,13 @@ private:
   std::vector<Drawable*> sheeps;
   std::vector<Drawable*> pigs;
   std::vector<Drawable*> chickens;
-  //std::vector<Drawable*> birds;
 
   std::vector<MultiSprite*> birds;
-  //std::vector<SmartSprite*> dropstwo;
-  //SubjectSprite* girlPlayer;
   World set;
   Player* girlPlayer;
+  std::list<std::string> catchedList;
+  std::list<std::string> catchingList;
+  std::list<std::string> releaseList; 
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;
   int currentSprite;

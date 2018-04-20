@@ -26,16 +26,16 @@ public:
     return images[currentFrame]->getSurface();
   }
 
-  std::string getIdentity()  const {
+  std::string getIdentity() const {
     return identity;
   }
-  void setIdentity(const std::string& id) { 
+  void setIdentity(const std::string id) { 
     identity = id;    
   }
-  std::string getCatcherId()  const {
+  std::string getCatcherId() const {
     return catcherId;
   }
-  void setCatcherId(const std::string& id) { 
+  void setCatcherId(const std::string id) { 
     catcherId = id;    
   }
 

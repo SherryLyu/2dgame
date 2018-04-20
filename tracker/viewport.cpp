@@ -32,15 +32,9 @@ void Viewport::setfps(const int fps) {
 }
 
 void Viewport::draw() const {
-  //allow user to modify font color by modifying XML values
+
   std::ostringstream ss;
   ss << currentfps;
-  /*SDL_Color fpscolor;
-  fpscolor.r = Gamedata::getInstance().getXmlInt("customfont/red");
-  fpscolor.g = Gamedata::getInstance().getXmlInt("customfont/green");
-  fpscolor.b = Gamedata::getInstance().getXmlInt("customfont/blue");
-  fpscolor.a = Gamedata::getInstance().getXmlInt("customfont/alpha");*/
-  //write username and fps to screen
 
   IoMod::getInstance().
     writeText("Current fps: "+ss.str(), 30, 30);

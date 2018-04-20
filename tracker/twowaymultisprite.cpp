@@ -5,8 +5,6 @@
 Vector2f TwowaymultiSprite::makeVelocity(int vx, int vy) const {
   float newvx = Gamedata::getInstance().getRandFloat(vx-5,vx+10);;
   float newvy = Gamedata::getInstance().getRandFloat(vy,vy);;
-  newvx *= [](){ if(rand()%2) return -1; else return 1; }();
-  newvy *= [](){ if(rand()%2) return -1; else return 1; }();
 
   return Vector2f(newvx, newvy);
 }

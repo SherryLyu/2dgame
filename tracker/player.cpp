@@ -167,6 +167,16 @@ void Player::stop() {
   setVelocity( Vector2f(0, 0) );
 }
 
+void Player::fall() {
+  if (getName().find("Reverse") != std::string::npos) {
+    setName("GirlFallReverse");
+  }else{
+    setName("GirlFall");
+  }
+  images = (ImageFactory::getInstance().getImages (getName()));
+  currentMode = FALL;
+}
+
 void Player::update(Uint32 ticks) { 
   if ( explosion ) {
     explosion->update(ticks);
@@ -186,7 +196,6 @@ void Player::update(Uint32 ticks) {
     stand();
   }
   if(currentMode == WALKRIGHT){
-    //std::cout << "Here comes change mode: " << currentMode << ". With image: " << getName() << std::endl;
     right();
     currentMode = STAND;
   }
@@ -213,20 +222,6 @@ void Player::update(Uint32 ticks) {
   advanceFrame(ticks);
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;
   setPosition(getPosition() + incr);
-
-  /*if ( getY() < 0) {
-    setVelocityY( fabs( getVelocityY() ) );
-  }
-  if ( getY() > worldHeight-getScaledHeight()) {
-    setVelocityY( -fabs( getVelocityY() ) );
-  }
-
-  if ( getX() < 0) {
-    setVelocityX( fabs( getVelocityX() ) );
-  }
-  if ( getX() > worldWidth-getScaledWidth()) {
-    setVelocityX( -fabs( getVelocityX() ) );
-  } */
 
   stop();
 }

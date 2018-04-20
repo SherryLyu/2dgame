@@ -4,12 +4,12 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfBirds>5</numberOfBirds>
+<numberOfBirds>6</numberOfBirds>
 <numberOfHorses>2</numberOfHorses>
 <numberOfCows>2</numberOfCows>
 <numberOfSheeps>2</numberOfSheeps>
 <numberOfPigs>2</numberOfPigs>
-<numberOfChickens>2</numberOfChickens>
+<numberOfChickens>0</numberOfChickens>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -101,6 +101,16 @@
   <transparency>false</transparency>
 </GirlStop>
 
+<GirlLose>
+  <file>assets/girllose.png</file>
+  <transparency>false</transparency>
+</GirlLose>
+
+<GirlWin>
+  <file>assets/girlwin.png</file>
+  <transparency>false</transparency>
+</GirlWin>
+
 <GirlStand>
   <file>assets/girlstand.png</file>
   <frames>8</frames>
@@ -173,13 +183,30 @@
   <transparency>false</transparency>
 </GirlHitReverse>
 
+<GirlFall>
+  <file>assets/fall.png</file>
+  <frames>8</frames>
+  <frameInterval>250</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlFall>
+
+<GirlFallReverse>
+  <file>assets/fallreverse.png</file>
+  <frames>8</frames>
+  <frameInterval>250</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>false</transparency>
+</GirlFallReverse>
 
 <Chicken>
   <file>assets/chicken.png</file>
   <startLoc x="0" y="400"/>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>150</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Chicken>
@@ -188,7 +215,7 @@
   <file>assets/chickenreverse.png</file>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>150</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </ChickenReverse>
@@ -212,7 +239,7 @@
   <startLoc x="100" y="320"/>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>100</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Horse>
@@ -221,7 +248,7 @@
   <file>assets/horsereverse.png</file>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>100</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </HorseReverse>
@@ -245,7 +272,7 @@
   <startLoc x="50" y="340"/>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>60</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Cow>
@@ -254,7 +281,7 @@
   <file>assets/cowreverse.png</file>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>60</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </CowReverse>
@@ -278,7 +305,7 @@
   <startLoc x="50" y="350"/>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>120</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Sheep>
@@ -287,7 +314,7 @@
   <file>assets/sheepreverse.png</file>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>120</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </SheepReverse>
@@ -312,7 +339,7 @@
   <startLoc x="50" y="345"/>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>130</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </Pig>
@@ -321,7 +348,7 @@
   <file>assets/pigreverse.png</file>
   <frames>4</frames>
   <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
+  <speedX>130</speedX>
   <speedY>0</speedY>
   <transparency>false</transparency>
 </PigReverse>
@@ -339,40 +366,6 @@
   <frameInterval>200</frameInterval>
   <transparency>false</transparency>
 </PigCatchedReverse>
-
-
-<Rabbit>
-  <file>assets/rabbit.png</file>
-  <startLoc x="150" y="400"/>
-  <frames>8</frames>
-  <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
-  <speedY>0</speedY>
-  <transparency>false</transparency>
-</Rabbit>
-
-<RabbitReverse>
-  <file>assets/rabbitreverse.png</file>
-  <frames>8</frames>
-  <frameInterval>200</frameInterval>
-  <speedX>200</speedX>
-  <speedY>0</speedY>
-  <transparency>false</transparency>
-</RabbitReverse>
-
-<RabbitCatched>
-  <file>assets/rabbitcatched.png</file>
-  <frames>4</frames>
-  <frameInterval>200</frameInterval>
-  <transparency>false</transparency>
-</RabbitCatched>
-
-<RabbitCatchedReverse>
-  <file>assets/rabbitcatchedreverse.png</file>
-  <frames>4</frames>
-  <frameInterval>200</frameInterval>
-  <transparency>false</transparency>
-</RabbitCatchedReverse>
 
 <Bird>
   <file>assets/birddown.png</file>
@@ -395,14 +388,6 @@
   <transparency>false</transparency>
 </set>
 
-<DropOne>
-  <file>assets/bubble.png</file>
-  <startLoc x="350" y="-100"/>
-  <speedX>0</speedX>
-  <speedY>50</speedY>
-  <safeDistance>150</safeDistance>
-  <transparency>false</transparency>
-</DropOne>
 
 <Dialogue>
   <file>assets/dialogue.png</file>

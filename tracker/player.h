@@ -41,12 +41,13 @@ public:
   void down();
   void hit();
   void stop();
+  void fall();
   void stand();
   
   virtual void explode();
 
 private:
-  enum MODE {STAND, JUMP, DOWN, WALKRIGHT, WALKLEFT, HIT};
+  enum MODE {STAND, JUMP, DOWN, WALKRIGHT, WALKLEFT, HIT, FALL};
   std::vector<Image *> images;
   ExplodingSprite* explosion;
   bool jumpingStatus;
