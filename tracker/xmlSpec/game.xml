@@ -4,11 +4,11 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfBirds>6</numberOfBirds>
+<numberOfBirds>10</numberOfBirds>
 <numberOfHorses>2</numberOfHorses>
 <numberOfCows>2</numberOfCows>
-<numberOfSheeps>2</numberOfSheeps>
-<numberOfPigs>2</numberOfPigs>
+<numberOfSheeps>3</numberOfSheeps>
+<numberOfPigs>0</numberOfPigs>
 <numberOfChickens>0</numberOfChickens>
 
 <frameCapOn>true</frameCapOn>

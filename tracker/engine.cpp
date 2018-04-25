@@ -192,7 +192,8 @@ void Engine::update(Uint32 ticks) {
     if ( (*it)->hasExploded() ) {
       if( static_cast<MultiSprite*>(*it)->getCatchedId() != "" ) {
         std::string catchedid = static_cast<MultiSprite*>(*it)->getCatchedId();
-        releaseList.push_back(catchedid);
+        Vector2f position = (*it)->getPosition();
+        releaseList.push_back(std::make_pair(catchedid, position));
         catchingList.remove(catchedid);
         static_cast<MultiSprite*>(*it)->releaseAnimal(1);
       }
@@ -212,7 +213,8 @@ void Engine::update(Uint32 ticks) {
           catchedList.push_back(animalId);
           catchingList.remove(animalId);
         }else if ( strategies[currentStrategy]->execute(**it, **itforhorses) 
-          && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+          && static_cast<MultiSprite*>(*it)->getCatchedId() == ""
+          && static_cast<TwowaymultiSprite*>(*itforhorses)->getCatcherId() == "") { 
           //collision detection for catching animals
           std::string animalName = (*itforhorses)->getName();
           static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
@@ -230,7 +232,8 @@ void Engine::update(Uint32 ticks) {
           catchedList.push_back(animalId);
           catchingList.remove(animalId);
         }else if ( strategies[currentStrategy]->execute(**it, **itforcows) 
-          && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+          && static_cast<MultiSprite*>(*it)->getCatchedId() == ""
+          && static_cast<TwowaymultiSprite*>(*itforcows)->getCatcherId() == "") { 
           std::string animalName = (*itforcows)->getName();
           std::string animalId = static_cast<TwowaymultiSprite*>(*itforcows)->getIdentity();
           static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
@@ -248,7 +251,8 @@ void Engine::update(Uint32 ticks) {
           catchedList.push_back(animalId);
           catchingList.remove(animalId);
         }else if ( strategies[currentStrategy]->execute(**it, **itforsheeps) 
-          && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+          && static_cast<MultiSprite*>(*it)->getCatchedId() == ""
+          && static_cast<TwowaymultiSprite*>(*itforsheeps)->getCatcherId() == "") { 
           std::string animalName = (*itforsheeps)->getName();
           std::string animalId = static_cast<TwowaymultiSprite*>(*itforsheeps)->getIdentity();
           static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
@@ -266,7 +270,8 @@ void Engine::update(Uint32 ticks) {
           catchedList.push_back(animalId);
           catchingList.remove(animalId);
         }else if ( strategies[currentStrategy]->execute(**it, **itforpigs) 
-          && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+          && static_cast<MultiSprite*>(*it)->getCatchedId() == ""
+          && static_cast<TwowaymultiSprite*>(*itforpigs)->getCatcherId() == "") { 
           std::string animalName = (*itforpigs)->getName();
           std::string animalId = static_cast<TwowaymultiSprite*>(*itforpigs)->getIdentity();
           static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
@@ -284,7 +289,8 @@ void Engine::update(Uint32 ticks) {
           catchedList.push_back(animalId);
           catchingList.remove(animalId);
         }else if ( strategies[currentStrategy]->execute(**it, **itforchickens) 
-          && static_cast<MultiSprite*>(*it)->getCatchedId() == "") { 
+          && static_cast<MultiSprite*>(*it)->getCatchedId() == ""
+          && static_cast<TwowaymultiSprite*>(*itforchickens)->getCatcherId() == "") { 
           std::string animalName = (*itforchickens)->getName();
           std::string animalId = static_cast<TwowaymultiSprite*>(*itforchickens)->getIdentity();
           static_cast<MultiSprite*>(*it)->catchAnimal(animalName, animalId);
@@ -307,23 +313,34 @@ void Engine::update(Uint32 ticks) {
     bool foundCatching = (std::find(catchingList.begin(), catchingList.end(), id) != catchingList.end());
     //check if animals have been catched away or still have chance to be saved
     if(foundCatched || foundCatching){
-      if(foundCatched) catchedList.remove(id);
-      delete *itforchickens;
-      itforchickens = chickens.erase(itforchickens);
+      if(foundCatched){
+        catchedList.remove(id);
+        delete *itforchickens;
+        itforchickens = chickens.erase(itforchickens);
+      }else{//foundCatching
+        static_cast<TwowaymultiSprite*>(*itforchickens)->setVisible(false);
+        ++itforchickens;
+      }
     }
     else ++itforchickens;
   }
 
   auto itforcows = cows.begin();
   while ( itforcows != cows.end() ) {
+
     (*itforcows)->update(ticks);
     std::string id = static_cast<TwowaymultiSprite*>(*itforcows)->getIdentity();
     bool foundCatched = (std::find(catchedList.begin(), catchedList.end(), id) != catchedList.end());
     bool foundCatching = (std::find(catchingList.begin(), catchingList.end(), id) != catchingList.end());
     if(foundCatched || foundCatching){
-      if(foundCatched) catchedList.remove(id);
-      delete *itforcows;
-      itforcows = cows.erase(itforcows);
+      if(foundCatched){
+        catchedList.remove(id);
+        delete *itforcows;
+        itforcows = cows.erase(itforcows);
+      }else{//foundCatching
+        static_cast<TwowaymultiSprite*>(*itforcows)->setVisible(false);
+        ++itforcows;
+      }
     }
     else ++itforcows;
   }
@@ -335,9 +352,14 @@ void Engine::update(Uint32 ticks) {
     bool foundCatched = (std::find(catchedList.begin(), catchedList.end(), id) != catchedList.end());
     bool foundCatching = (std::find(catchingList.begin(), catchingList.end(), id) != catchingList.end());
     if(foundCatched || foundCatching){
-      if(foundCatched) catchedList.remove(id);
-      delete *itforhorses;
-      itforhorses = horses.erase(itforhorses);
+      if(foundCatched){ 
+        catchedList.remove(id);
+        delete *itforhorses;
+        itforhorses = horses.erase(itforhorses);
+      }else{//foundCatching
+        static_cast<TwowaymultiSprite*>(*itforhorses)->setVisible(false);
+        ++itforhorses;
+      }
     }
     else ++itforhorses;
   }
@@ -349,9 +371,14 @@ void Engine::update(Uint32 ticks) {
     bool foundCatched = (std::find(catchedList.begin(), catchedList.end(), id) != catchedList.end());
     bool foundCatching = (std::find(catchingList.begin(), catchingList.end(), id) != catchingList.end());
     if(foundCatched || foundCatching){
-      if(foundCatched) catchedList.remove(id);
-      delete *itforsheeps;
-      itforsheeps = sheeps.erase(itforsheeps);
+      if(foundCatched){ 
+        catchedList.remove(id);
+        delete *itforsheeps;
+        itforsheeps = sheeps.erase(itforsheeps);
+      }else{
+        static_cast<TwowaymultiSprite*>(*itforsheeps)->setVisible(false);
+        ++itforsheeps;
+      }
     }
     else ++itforsheeps;
   }
@@ -363,26 +390,76 @@ void Engine::update(Uint32 ticks) {
     bool foundCatched = (std::find(catchedList.begin(), catchedList.end(), id) != catchedList.end());
     bool foundCatching = (std::find(catchingList.begin(), catchingList.end(), id) != catchingList.end());
     if(foundCatched || foundCatching){
-      if(foundCatched) catchedList.remove(id);
-      delete *itforpigs;
-      itforpigs = pigs.erase(itforpigs);
+      if(foundCatched){
+        catchedList.remove(id);
+        delete *itforpigs;
+        itforpigs = pigs.erase(itforpigs);
+      }else{
+        static_cast<TwowaymultiSprite*>(*itforpigs)->setVisible(false);
+        ++itforpigs;
+      }
     }
     else ++itforpigs;
   }
   
   //return animals who has set free by player
   while(!releaseList.empty()){
-    std::string f = releaseList.front();
-    if (f.compare(0,3,"Cow") == 0){
-      cows.push_back( new TwowaymultiSprite("Cow", f) );
-    }else if (f.compare(0,3,"Pig") == 0){
-      pigs.push_back( new TwowaymultiSprite("Pig", f) );
-    }else if (f.compare(0,5,"Horse") == 0){
-      horses.push_back( new TwowaymultiSprite("Horse", f) );
-    }else if (f.compare(0,5,"Sheep") == 0){
-      sheeps.push_back( new TwowaymultiSprite("Sheep", f) );
+    std::pair<std::string, Vector2f> f = releaseList.front();
+    if (f.first.compare(0,3,"Cow") == 0){
+      auto it = find_if(cows.begin(), cows.end(), 
+        [&f](Drawable* element){
+          return static_cast<TwowaymultiSprite*>(element)->getIdentity() == f.first;
+        });
+      if(it != cows.end()){
+        static_cast<TwowaymultiSprite*>(*it)->setCatcherId("");
+        static_cast<TwowaymultiSprite*>(*it)->setVisible(true);
+        static_cast<TwowaymultiSprite*>(*it)->setReleasing(true);
+        static_cast<TwowaymultiSprite*>(*it)->setPosition(f.second);
+      }
+    }else if (f.first.compare(0,3,"Pig") == 0){
+      auto it = find_if(pigs.begin(), pigs.end(), 
+        [&f](Drawable* element){
+          return static_cast<TwowaymultiSprite*>(element)->getIdentity() == f.first;
+        });
+      if(it != pigs.end()){
+        static_cast<TwowaymultiSprite*>(*it)->setCatcherId("");
+        static_cast<TwowaymultiSprite*>(*it)->setVisible(true);
+        static_cast<TwowaymultiSprite*>(*it)->setReleasing(true);
+        static_cast<TwowaymultiSprite*>(*it)->setPosition(f.second);
+      }
+    }else if (f.first.compare(0,5,"Horse") == 0){
+      auto it = find_if(horses.begin(), horses.end(), 
+        [&f](Drawable* element){
+          return static_cast<TwowaymultiSprite*>(element)->getIdentity() == f.first;
+        });
+      if(it != horses.end()){
+        static_cast<TwowaymultiSprite*>(*it)->setCatcherId("");
+        static_cast<TwowaymultiSprite*>(*it)->setVisible(true);
+        static_cast<TwowaymultiSprite*>(*it)->setReleasing(true);
+        static_cast<TwowaymultiSprite*>(*it)->setPosition(f.second);
+      }
+    }else if (f.first.compare(0,5,"Sheep") == 0){
+      auto it = find_if(sheeps.begin(), sheeps.end(), 
+        [&f](Drawable* element){
+          return static_cast<TwowaymultiSprite*>(element)->getIdentity() == f.first;
+        });
+      if(it != sheeps.end()){
+        static_cast<TwowaymultiSprite*>(*it)->setCatcherId("");
+        static_cast<TwowaymultiSprite*>(*it)->setVisible(true);
+        static_cast<TwowaymultiSprite*>(*it)->setReleasing(true);
+        static_cast<TwowaymultiSprite*>(*it)->setPosition(f.second);
+      }
     }else{
-      chickens.push_back( new TwowaymultiSprite("Chicken", f) );
+      auto it = find_if(chickens.begin(), chickens.end(), 
+        [&f](Drawable* element){
+          return static_cast<TwowaymultiSprite*>(element)->getIdentity() == f.first;
+        });
+      if(it != chickens.end()){
+        static_cast<TwowaymultiSprite*>(*it)->setCatcherId("");
+        static_cast<TwowaymultiSprite*>(*it)->setVisible(true);
+        static_cast<TwowaymultiSprite*>(*it)->setReleasing(true);
+        static_cast<TwowaymultiSprite*>(*it)->setPosition(f.second);
+      }
     }   
     releaseList.pop_front();
   }
@@ -407,7 +484,7 @@ void Engine::switchSprite(){
 }
 
 void Engine::setFps(const int fps){
-  Viewport::getInstance().setfps(fps);
+  Viewport::getInstance().setfps(fps); 
 }
 
 bool Engine::play() {

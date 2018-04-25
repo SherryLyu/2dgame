@@ -3,7 +3,7 @@
 #include "renderContext.h"
 
 Vector2f TwowaymultiSprite::makeVelocity(int vx, int vy) const {
-  float newvx = Gamedata::getInstance().getRandFloat(vx-5,vx+10);;
+  float newvx = Gamedata::getInstance().getRandFloat(vx-10,vx+10);;
   float newvy = Gamedata::getInstance().getRandFloat(vy,vy);;
 
   return Vector2f(newvx, newvy);
@@ -27,13 +27,17 @@ TwowaymultiSprite::TwowaymultiSprite( const std::string& name, const std::string
   images( RenderContext::getInstance()->getImages(name) ),
   catcherId(""),
   identity(id),
+  visible(true),
+  releasing(false),
 
   currentFrame(0),
   numberOfFrames( Gamedata::getInstance().getXmlInt(name+"/frames") ),
   frameInterval( Gamedata::getInstance().getXmlInt(name+"/frameInterval")),
   timeSinceLastFrame( 0 ),
   worldWidth(Gamedata::getInstance().getXmlInt("world/width")),
-  worldHeight(Gamedata::getInstance().getXmlInt("world/height"))
+  worldHeight(Gamedata::getInstance().getXmlInt("world/height")),
+  originalY(Gamedata::getInstance().getXmlInt(name+"/startLoc/y")),
+  originalVX(Gamedata::getInstance().getXmlInt(name+"/speedX"))
 { }
 
 TwowaymultiSprite::TwowaymultiSprite(const TwowaymultiSprite& s) :
@@ -41,12 +45,16 @@ TwowaymultiSprite::TwowaymultiSprite(const TwowaymultiSprite& s) :
   images( s.images ),
   catcherId( s.catcherId ),
   identity( s.identity ),
+  visible( s.visible ),
+  releasing( s.releasing ),
   currentFrame( s.currentFrame ),
   numberOfFrames( s.numberOfFrames ),
   frameInterval( s.frameInterval ),
   timeSinceLastFrame( s.timeSinceLastFrame ),
   worldWidth( s.worldWidth ),
-  worldHeight( s.worldHeight )
+  worldHeight( s.worldHeight ),
+  originalY( s.originalY ),
+  originalVX( s.originalVX )
   { }
 
 TwowaymultiSprite& TwowaymultiSprite::operator=(const TwowaymultiSprite& s) {
@@ -54,20 +62,34 @@ TwowaymultiSprite& TwowaymultiSprite::operator=(const TwowaymultiSprite& s) {
   images = ( s.images );
   catcherId = ( s.catcherId );
   identity = ( s.identity );
+  visible = ( s.visible );
+  releasing = ( s.releasing );
   currentFrame = ( s.currentFrame );
   numberOfFrames = ( s.numberOfFrames );
   frameInterval = ( s.frameInterval );
   timeSinceLastFrame = ( s.timeSinceLastFrame );
   worldWidth = ( s.worldWidth );
   worldHeight = ( s.worldHeight );
+  originalY = ( s.originalY );
+  originalVX = ( s.originalVX );
   return *this;
 }
 
 void TwowaymultiSprite::draw() const { 
-  images[currentFrame]->draw(getX(), getY(), getScale());
+  if(visible || releasing){
+    images[currentFrame]->draw(getX(), getY(), getScale());
+  }
 }
 
 void TwowaymultiSprite::update(Uint32 ticks) { 
+  if(releasing){
+    if(getY() < originalY){
+      setVelocity(Vector2f(0, 50));
+    }else{
+      releasing = false;
+      setVelocity(Vector2f(originalVX, 0));
+    }
+  }
   advanceFrame(ticks);
 
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;

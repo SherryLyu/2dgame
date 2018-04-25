@@ -38,11 +38,18 @@ public:
   void setCatcherId(const std::string id) { 
     catcherId = id;    
   }
-
+  void setVisible(const bool b) { 
+    visible = b;   
+  }
+  void setReleasing(const bool b) { 
+    releasing = b;   
+  }
 protected:
   std::vector<Image *> images;
   std::string catcherId;
   std::string identity;
+  bool visible;
+  bool releasing;
 
   unsigned currentFrame;
   unsigned numberOfFrames;
@@ -50,6 +57,8 @@ protected:
   float timeSinceLastFrame;
   int worldWidth;
   int worldHeight;
+  float originalY;
+  float originalVX;
 
   Vector2f makeVelocity(int, int) const;
   void advanceFrame(Uint32 ticks);

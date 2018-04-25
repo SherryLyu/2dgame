@@ -1,4 +1,5 @@
 #include <vector>
+#include <utility>
 #include <list>
 #include <SDL.h>
 #include "ioMod.h"
@@ -7,6 +8,7 @@
 #include "world.h"
 #include "hud.h"
 #include "viewport.h"
+#include <utility>
 
 class CollisionStrategy;
 //class SmartSprite;
@@ -52,7 +54,7 @@ private:
   Player* girlPlayer;
   std::list<std::string> catchedList;
   std::list<std::string> catchingList;
-  std::list<std::string> releaseList; 
+  std::list<std::pair<std::string, Vector2f> > releaseList; 
   std::vector<CollisionStrategy*> strategies;
   int currentStrategy;
   int currentSprite;
