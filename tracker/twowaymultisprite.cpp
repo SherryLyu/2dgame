@@ -2,9 +2,15 @@
 #include "gamedata.h"
 #include "renderContext.h"
 
+Vector2f TwowaymultiSprite::makeLocation(int sx, int sy) const {
+  int width = Gamedata::getInstance().getXmlInt("world/width");
+  float newsx = Gamedata::getInstance().getRandFloat(sx/2,width-sx);
+  return Vector2f(newsx, sy);
+}
+
 Vector2f TwowaymultiSprite::makeVelocity(int vx, int vy) const {
-  float newvx = Gamedata::getInstance().getRandFloat(vx-10,vx+10);;
-  float newvy = Gamedata::getInstance().getRandFloat(vy,vy);;
+  float newvx = Gamedata::getInstance().getRandFloat(vx-5,vx+50);
+  float newvy = Gamedata::getInstance().getRandFloat(vy,vy);
 
   return Vector2f(newvx, newvy);
 }
@@ -19,7 +25,7 @@ void TwowaymultiSprite::advanceFrame(Uint32 ticks) {
 
 TwowaymultiSprite::TwowaymultiSprite( const std::string& name, const std::string& id ) :
   Drawable(name, 
-           Vector2f(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
+           makeLocation(Gamedata::getInstance().getXmlInt(name+"/startLoc/x"), 
                     Gamedata::getInstance().getXmlInt(name+"/startLoc/y")), 
            makeVelocity(Gamedata::getInstance().getXmlInt(name+"/speedX"),
                     Gamedata::getInstance().getXmlInt(name+"/speedY"))
@@ -82,12 +88,17 @@ void TwowaymultiSprite::draw() const {
 }
 
 void TwowaymultiSprite::update(Uint32 ticks) { 
+  //create animation 
   if(releasing){
     if(getY() < originalY){
       setVelocity(Vector2f(0, 50));
     }else{
       releasing = false;
-      setVelocity(Vector2f(originalVX, 0));
+      if (getName().find("Reverse") != std::string::npos) {
+        setVelocity(Vector2f(-originalVX, 0));
+      }else{
+        setVelocity(Vector2f(originalVX, 0));
+      } 
     }
   }
   advanceFrame(ticks);

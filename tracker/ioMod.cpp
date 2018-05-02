@@ -64,9 +64,10 @@ void IoMod::writeText(const std::string& msg, int x, int y) const {
 }
 
 //overloading writeText function for custom color font
-void IoMod::writeText(const std::string& msg, int x, int y, SDL_Color newTextColor) const {
+void IoMod::writeText(const std::string& msg, int x, int y, 
+        TTF_Font* newfont, SDL_Color newTextColor) const {
   SDL_Surface* surface = 
-    TTF_RenderText_Solid(font, msg.c_str(), newTextColor);
+    TTF_RenderText_Solid(newfont, msg.c_str(), newTextColor);
 
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 

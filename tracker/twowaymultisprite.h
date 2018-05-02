@@ -44,6 +44,7 @@ public:
   void setReleasing(const bool b) { 
     releasing = b;   
   }
+
 protected:
   std::vector<Image *> images;
   std::string catcherId;
@@ -61,6 +62,7 @@ protected:
   float originalVX;
 
   Vector2f makeVelocity(int, int) const;
+  Vector2f makeLocation(int, int) const;
   void advanceFrame(Uint32 ticks);
   TwowaymultiSprite& operator=(const TwowaymultiSprite&);
 };

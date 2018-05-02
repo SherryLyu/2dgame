@@ -4,12 +4,6 @@
      So make sure to include your name as part of the screenTitle -->
 <title>Sherry Lyu's Tracker Framework</title>
 <maxStringSize>50</maxStringSize>
-<numberOfBirds>10</numberOfBirds>
-<numberOfHorses>2</numberOfHorses>
-<numberOfCows>2</numberOfCows>
-<numberOfSheeps>3</numberOfSheeps>
-<numberOfPigs>0</numberOfPigs>
-<numberOfChickens>0</numberOfChickens>
 
 <frameCapOn>true</frameCapOn>
 <period>17</period>
@@ -69,21 +63,32 @@
 
 <!-- custom color font -->
 <customfont name="customfont">
-  <file>fonts/gooddog.otf</file>
-  <size>30</size>
-  <red>88</red>
-  <green>24</green>
-  <blue>69</blue>
+  <file>fonts/gooddog_cool.otf</file>
+  <size>50</size>
+  <red>149</red>
+  <green>65</green>
+  <blue>23</blue>
   <alpha>0</alpha>
 </customfont>
+
+<!-- custom input color font -->
+<inputfont name="inputfont">
+  <file>fonts/ColabThi.otf</file>
+  <size>20</size>
+  <red>149</red>
+  <green>65</green>
+  <blue>23</blue>
+  <alpha>0</alpha>
+</inputfont>
 
 <Girl>
   <file>assets/girl.png</file>
   <startLoc x="0" y="304"/>
   <frames>8</frames>
   <frameInterval>180</frameInterval>
-  <speedX>200</speedX>
-  <speedY>100</speedY>
+  <speedX>250</speedX>
+  <speedY>150</speedY>
+  <gravity>200.0</gravity>
   <transparency>false</transparency>
 </Girl>
 
@@ -92,22 +97,43 @@
   <frames>8</frames>
   <frameInterval>180</frameInterval>
   <speedX>200</speedX>
-  <speedY>100</speedY>
+  <speedY>150</speedY>
   <transparency>false</transparency>
 </GirlReverse>
 
 <GirlStop>
   <file>assets/girlstop.png</file>
+  <startLocX>650</startLocX>
+  <startLocY>170</startLocY>
+  <width>64</width>
+  <height>127</height>
   <transparency>false</transparency>
 </GirlStop>
 
 <GirlLose>
   <file>assets/girllose.png</file>
+  <startLocX>550</startLocX>
+  <startLocY>160</startLocY>
+  <width>121</width>
+  <height>129</height>
   <transparency>false</transparency>
 </GirlLose>
 
+<GirlMenu>
+  <file>assets/girlmenu.png</file>
+  <startLocX>210</startLocX>
+  <startLocY>160</startLocY>
+  <width>130</width>
+  <height>157</height>
+  <transparency>false</transparency>
+</GirlMenu>
+
 <GirlWin>
   <file>assets/girlwin.png</file>
+  <startLocX>550</startLocX>
+  <startLocY>150</startLocY>
+  <width>80</width>
+  <height>155</height>
   <transparency>false</transparency>
 </GirlWin>
 
@@ -369,11 +395,11 @@
 
 <Bird>
   <file>assets/birddown.png</file>
-  <startLoc x="10" y="-50"/>
+  <startLoc x="94" y="-50"/>
   <frames>4</frames>
-  <frameInterval>200</frameInterval>
+  <frameInterval>150</frameInterval>
   <speedX>0</speedX>
-  <speedY>100</speedY>
+  <speedY>150</speedY>
   <chunk>
     <size>40</size>
     <distance>200</distance>
@@ -388,11 +414,89 @@
   <transparency>false</transparency>
 </set>
 
-
 <Dialogue>
   <file>assets/dialogue.png</file>
-  <startLoc x="200" y="300"/>
+  <startLocX>190</startLocX>
+  <startLocY>100</startLocY>
+  <width>500</width>
+  <height>253</height>
   <transparency>false</transparency>
 </Dialogue>
+
+<Start>
+  <file>assets/menu.png</file>
+  <startLocX>0</startLocX>
+  <startLocY>0</startLocY>
+  <width>864</width>
+  <height>480</height>
+  <image>assets/start.png</image>
+  <ImageLoc x="180" y="150" />
+  <imageWidth>200</imageWidth>
+  <imageHeight>206</imageHeight>
+  <IntroductionLoc x="480" y="100" />
+  <noOfOptions>3</noOfOptions>
+  <option0>Start</option0>
+  <option1>Customize</option1>
+  <option2>Control/Story</option2>
+  <spaces>70</spaces>
+  <transparency>false</transparency>
+</Start>
+
+<Menu>
+  <file>assets/menu.png</file>
+  <startLocX>0</startLocX>
+  <startLocY>0</startLocY>
+  <width>864</width>
+  <height>480</height>
+  <optionLoc x="460" y="80" />
+  <noOfOptions>3</noOfOptions>
+  <option0>Back to Game</option0>
+  <option1>Customize</option1>
+  <option2>Control</option2>
+  <spaces>70</spaces>
+  <transparency>false</transparency>
+</Menu>
+
+<Customize>
+  <file>assets/customize.png</file>
+  <startLocX>0</startLocX>
+  <startLocY>0</startLocY>
+  <width>864</width>
+  <height>480</height>
+  <optionLoc x="250" y="125" />
+  <noOfOptions>6</noOfOptions>
+  <option0>chickens</option0>
+  <option1>sheeps</option1>
+  <option2>pigs</option2>
+  <option3>horses</option3>
+  <option4>cows</option4>
+  <option5>birds</option5>
+  <spaces>200</spaces>
+  <transparency>false</transparency>
+</Customize>
+
+<Space>
+  <file>assets/space.png</file>
+  <startLoc x="340" y="170"/>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>true</transparency>
+</Space>
+
+<clickOn>
+  <file>assets/clickon.png</file>
+  <startLoc x="340" y="170"/>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>true</transparency>
+</clickOn>
+
+<clickOff>
+  <file>assets/clickoff.png</file>
+  <startLoc x="340" y="170"/>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <transparency>true</transparency>
+</clickOff>
 
 </GameData>

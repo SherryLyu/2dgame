@@ -5,8 +5,9 @@
 
 Vector2f MultiSprite::makeLocation(int sx, int sy) const {
   int width = Gamedata::getInstance().getXmlInt("world/width");
-  float newsx = Gamedata::getInstance().getRandFloat(sx,rand()%width-sx);
-  return Vector2f(newsx, sy);
+  float newsx = Gamedata::getInstance().getRandFloat(sx/2,width-sx);
+  float newsy = Gamedata::getInstance().getRandFloat(sy-10,sy-300);
+  return Vector2f(newsx, newsy);
 }
 
 Vector2f MultiSprite::makeVelocity(int vx, int vy) const {
@@ -106,7 +107,7 @@ void MultiSprite::catchAnimal(const std::string& n, const std::string& id) {
   if(n == "Chicken" || n == "ChickenReverse"){
     setVelocityY(-fabs( getVelocityY()*1.05));
   }else{
-    setVelocityY(-fabs( getVelocityY()*0.8));
+    setVelocityY(-fabs( getVelocityY()*0.7));
   }
   catchedId = id;
 }
@@ -141,12 +142,12 @@ void MultiSprite::update(Uint32 ticks) {
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;
   setPosition(getPosition() + incr);
 
-  if ( getY() < -174) {
+  if ( getY() < -400) {
     setName(initialName);
     images = (ImageFactory::getInstance().getImages (getName()));
     catchedId = "";
     setVelocity(initialVelocity);
-    setPosition(initialPosition);
+    setPosition(makeLocation(initialPosition[0], initialPosition[1]));
   }
   if ( getY() > 345) {
     setVelocityY( -fabs( getVelocityY() ) );

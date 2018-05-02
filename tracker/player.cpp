@@ -33,7 +33,8 @@ Player::Player( const std::string& name) :
   worldHeight(Gamedata::getInstance().getXmlInt("world/height")),
   lastMode(STAND),
   currentMode(STAND),
-  initialVelocity(getVelocity())
+  initialVelocity(getVelocity()),
+  gravity(Gamedata::getInstance().getXmlFloat(name+"/gravity"))
 { }
 
 Player::Player(const Player& s) :
@@ -48,9 +49,10 @@ Player::Player(const Player& s) :
   timeSinceLastFrame( s.timeSinceLastFrame ),
   worldWidth( s.worldWidth ),
   worldHeight( s.worldHeight ),
-  lastMode(s.lastMode),
-  currentMode(s.currentMode),
-  initialVelocity( s.initialVelocity )
+  lastMode( s.lastMode ),
+  currentMode( s.currentMode ),
+  initialVelocity( s.initialVelocity ),
+  gravity( s.gravity )
   { }
 
 Player& Player::operator=(const Player& s) {
@@ -68,6 +70,7 @@ Player& Player::operator=(const Player& s) {
   lastMode = (s.lastMode);
   currentMode = ( s.currentMode );
   initialVelocity = ( s.initialVelocity );
+  gravity = ( s.gravity );
   return *this;
 }
 
@@ -86,14 +89,11 @@ void Player::draw() const {
 
 void Player::right() { 
   if ( getX() < worldWidth-getScaledWidth()) {
-    //std::cout << "Here comes turing right (1): " << currentMode << ". With image: " << getName() << std::endl;
-    //reverse the direction of sprite
     setName("Girl");
     images = (ImageFactory::getInstance().getImages (getName()));
     setVelocityX(initialVelocity[0]);
     lastMode = currentMode;
     currentMode = WALKRIGHT;
-    //std::cout << "Here comes turing right (2): " << currentMode << ". With image: " << currentname << std::endl;
   }
 } 
 
@@ -134,7 +134,6 @@ void Player::down()  {
 }
 
 void Player::jump(){
-  
   if ( getY() > 0) {
     if( getY() > 215){
       if (getName().find("Reverse") != std::string::npos) {
@@ -220,6 +219,12 @@ void Player::update(Uint32 ticks) {
     }
   }
   advanceFrame(ticks);
+  if(currentMode == DOWN){
+    float incrY = gravity * static_cast<float>(ticks) * 0.001;
+    if(getVelocityY() != 0){
+      setVelocityY(getVelocityY() + incrY);
+    }
+  }
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;
   setPosition(getPosition() + incr);
 

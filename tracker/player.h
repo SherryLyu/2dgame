@@ -63,6 +63,7 @@ private:
   MODE currentMode;
 
   Vector2f initialVelocity;
+  float gravity;
   void advanceFrame(Uint32 ticks);
   Player& operator=(const Player&);
 };

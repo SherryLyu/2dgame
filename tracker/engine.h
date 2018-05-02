@@ -8,10 +8,12 @@
 #include "world.h"
 #include "hud.h"
 #include "viewport.h"
+#include "menuEngine.h"
+#include "numberdata.h"
+#include "sound.h"
 #include <utility>
 
 class CollisionStrategy;
-//class SmartSprite;
 class SubjectSprite;
 class MultiSprite;
 class Player;
@@ -23,6 +25,7 @@ public:
   bool play();
   void switchSprite();
   void setFps(const int fps);
+
   //explicitly disallow compiler generated functions
   Engine(const Engine&) = delete;
   Engine& operator=(const Engine&) = delete;
@@ -33,6 +36,7 @@ private:
   Clock& clock;
 
   SDL_Renderer * const renderer;
+  MenuEngine menuEngine;
   World world;
   World cloud;
   World tower;
@@ -48,8 +52,21 @@ private:
   std::vector<Drawable*> sheeps;
   std::vector<Drawable*> pigs;
   std::vector<Drawable*> chickens;
-
   std::vector<MultiSprite*> birds;
+
+  NumberData horsedata;
+  NumberData cowdata;
+  NumberData sheepdata;
+  NumberData pigdata;
+  NumberData chickendata;
+  NumberData birddata;
+  int nofhorses;
+  int nofcows;
+  int nofsheeps;
+  int nofpigs;
+  int nofchickens;
+  int nofbirds;
+  
   World set;
   Player* girlPlayer;
   std::list<std::string> catchedList;
@@ -62,6 +79,9 @@ private:
 
   bool makeVideo;
   bool showHud;
+  bool godMode;
+  bool girlSoundFlag;
+  SDLSound sound;
 
   void draw() const;
   void update(Uint32);
