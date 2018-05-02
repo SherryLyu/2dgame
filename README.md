@@ -1,4 +1,4 @@
-2D game - Siyun(Sherry) Lyu
+2D game - Siyun(Sherry) Lyu (video included)
 
 Story: 
 
